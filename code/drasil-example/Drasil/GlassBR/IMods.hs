@@ -1,4 +1,4 @@
-module Drasil.GlassBR.IMods (symb, iMods, iMods0, iMods1, pbIsSafe, lrIsSafe, instModIntro) where
+module Drasil.GlassBR.IMods (symb, iMods, iMods0, iMods1, pbIsSafe, lrIsSafe, instModIntro, pbIsSafeExpr) where
 
 import Prelude hiding (exp)
 import Language.Drasil
@@ -9,7 +9,7 @@ import Drasil.GlassBR.DataDefs (probOfBreak, calofCapacity, calofDemand,
   pbTolUsr, qRef)
 import Drasil.GlassBR.Goals (willBreakGS)
 import Drasil.GlassBR.References (astm2009)
-import Drasil.GlassBR.Unitals (charWeight, demand, demandq, isSafeLR, isSafePb, isSafeProb,
+import Drasil.GlassBR.Unitals (charWeight, demand, demandq, isSafeLR, isSafePb,
   lRe, pbTol, plateLen, plateWidth, probBr, standOffDist)
 
 import Data.Drasil.Concepts.Documentation (goal)
@@ -30,25 +30,32 @@ symb = map dqdWr [plateLen, plateWidth, charWeight, standOffDist] ++
 {--}
 
 pbIsSafe :: InstanceModel
-pbIsSafe = imNoDeriv (EquationalModel pbIsSafeQD)
+pbIsSafe = imNoDeriv (EquationalModel pbIsSafeQD) -- (OthModel pbIsSafeRC)
   [qwC probBr $ UpFrom (Exc, 0), qwC pbTol $ UpFrom (Exc, 0)]
   (qw isSafePb) []
   [makeCite astm2009] "isSafePb"
   [pbIsSafeDesc, probBRRef, pbTolUsr]
 
 
+-- pbIsSafeQD :: QDefinition
+-- pbIsSafeQD = ec isSafePb pbIsSafeExpr -- mkQuantDef' isSafePb (nounPhraseSP "Safety Req-Pb") pbIsSafeExpr
+
+-- pbIsSafeQD :: QDefinition
+-- pbIsSafeQD = fromEqn' "isSafePb" (nounPhraseSP "Safety Req-Pb") pbIsSafeDesc (eqSymb isSafePb) Boolean pbIsSafeExpr
+
 pbIsSafeQD :: QDefinition
-pbIsSafeQD = mkQuantDef isSafePb pbIsSafeExpr
+pbIsSafeQD = mkQuantDef' isSafePb (nounPhraseSP "Safety Req-Pb") pbIsSafeExpr
 
--- fromEqn' "isSafePb" (nounPhraseSP "Safety Req-Pb") pbIsSafeDesc (eqSymb isSafePb) Boolean pbIsSafeExpr
+-- mkQuantDef (mkQuant "isSafePb" (nounPhraseSP "probability of glass breakage safety requirement") (eqSymb isSafePb) Boolean Nothing Nothing) pbIsSafeExpr
 
--- mkQuantDef' isSafePb (nounPhraseSP "Safety Req-Pb") pbIsSafeExpr
+-- fromEqnSt' "isSafePb" (nounPhraseSP "probability of glass breakage safety requirement") (S "Safety Req-Pb") (symbol isSafePb) Boolean pbIsSafeExpr
 
 pbIsSafeExpr :: Expr
 pbIsSafeExpr = sy probBr $< sy pbTol
 
--- makeRC "safetyReqPb" (nounPhraseSP "Safety Req-Pb")
---   EmptyS (sy isSafePb $= sy probBr $< sy pbTol)
+-- pbIsSafeRC :: RelationConcept
+-- pbIsSafeRC = makeRC "isSafePb" (nounPhraseSP "Safety Req-Pb")
+--   EmptyS (sy isSafePb $= pbIsSafeExpr)
 
 {--}
 
