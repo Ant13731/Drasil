@@ -1,12 +1,10 @@
-
 {-# LANGUAGE TemplateHaskell, Rank2Types, ScopedTypeVariables  #-}
-module Theory.Drasil.ModelKinds ( ModelKinds(..), setMk, elimMk, lensMk, getEqModQds ) where
 
-import Language.Drasil
-    ( QDefinition, RelationConcept, ConceptDomain(..), Definition(..), 
-    ExprRelat(..), Idea(..), NamedIdea(..), HasUID(..) )
-import Control.Lens
-    ( Lens', (^.), to, lens, set, makeLenses, Getter, Setter' )
+module Theory.Drasil.ModelKinds (ModelKinds(..), setMk, elimMk, lensMk, getEqModQds) where
+
+import Language.Drasil (QDefinition, RelationConcept, ConceptDomain(..),
+    Definition(..), ExprRelat(..), Idea(..), NamedIdea(..), HasUID(..))
+import Control.Lens (Lens', (^.), to, lens, set, makeLenses, Getter, Setter')
 import Data.Maybe (mapMaybe)
 
 data ModelKinds = EquationalModel QDefinition
@@ -15,12 +13,12 @@ data ModelKinds = EquationalModel QDefinition
 
 makeLenses ''ModelKinds
 
-instance HasUID             ModelKinds where uid = lensMk uid uid
-instance NamedIdea          ModelKinds where term = lensMk term term
-instance Idea               ModelKinds where getA = elimMk (to getA) (to getA)
-instance Definition         ModelKinds where defn = lensMk defn defn
-instance ConceptDomain      ModelKinds where cdom = elimMk (to cdom) (to cdom)
-instance ExprRelat          ModelKinds where relat = elimMk (to relat) (to relat)
+instance HasUID        ModelKinds where uid   = lensMk uid uid
+instance NamedIdea     ModelKinds where term  = lensMk term term
+instance Idea          ModelKinds where getA  = elimMk (to getA) (to getA)
+instance Definition    ModelKinds where defn  = lensMk defn defn
+instance ConceptDomain ModelKinds where cdom  = elimMk (to cdom) (to cdom)
+instance ExprRelat     ModelKinds where relat = elimMk (to relat) (to relat)
 
 elimMk :: Getter QDefinition a -> Getter RelationConcept a -> ModelKinds -> a
 elimMk l _ (EquationalModel q) = q ^. l
