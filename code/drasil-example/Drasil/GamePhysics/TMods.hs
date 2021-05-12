@@ -1,7 +1,7 @@
 module Drasil.GamePhysics.TMods (tMods, newtonSL, newtonSLR, newtonTL, newtonLUG) where
 
 import Language.Drasil
-import Theory.Drasil (TheoryModel, tmNoRefs)
+import Theory.Drasil (TheoryModel, tmNoRefs, ModelKinds(OthModel, EquationalModel))
 import Utils.Drasil
 
 import Drasil.GamePhysics.Assumptions (assumpOD)
@@ -25,15 +25,14 @@ tMods = [newtonSL, newtonTL, newtonLUG, newtonSLR]
 -- T2 : Newton's third law of motion --
 
 newtonTL :: TheoryModel
-newtonTL = tmNoRefs (cw newtonTLRC) [qw force_1, qw force_2]
-  ([] :: [ConceptChunk]) [] [newtonTLRel] [] "NewtonThirdLawMot" [newtonTLNote]
+newtonTL = tmNoRefs (EquationalModel newtonTLQD) [qw force_1, qw force_2]
+  ([] :: [ConceptChunk]) [] [relat newtonTLQD] [] "NewtonThirdLawMot" [newtonTLNote]
 
-newtonTLRC :: RelationConcept
-newtonTLRC = makeRC "newtonTLRC" (nounPhraseSP "Newton's third law of motion")
-  EmptyS newtonTLRel
+newtonTLQD :: QDefinition
+newtonTLQD = mkQuantDef' force_1 (nounPhraseSP "Newton's third law of motion") newtonTLExpr
 
-newtonTLRel :: Relation
-newtonTLRel = sy force_1 $= negate (sy force_2)
+newtonTLExpr :: Expr
+newtonTLExpr = negate (sy force_2)
 
 newtonTLNote :: Sentence
 newtonTLNote = foldlSent [S "Every action has an equal and opposite reaction.",
@@ -44,7 +43,7 @@ newtonTLNote = foldlSent [S "Every action has an equal and opposite reaction.",
 -- T3 : Newton's law of universal gravitation --
 
 newtonLUG :: TheoryModel
-newtonLUG = tmNoRefs (cw newtonLUGRC)
+newtonLUG = tmNoRefs (OthModel newtonLUGRC)
   [qw force, qw gravitationalConst, qw mass_1, qw mass_2,
   qw dispNorm, qw dVect, qw distMass] ([] :: [ConceptChunk])
   [] [newtonLUGRel] [] "UniversalGravLaw" newtonLUGNotes
@@ -77,7 +76,7 @@ newtonLUGNotes = map foldlSent [
 -- T4 : Newton's second law for rotational motion --
 
 newtonSLR :: TheoryModel
-newtonSLR = tmNoRefs (cw newtonSLRRC)
+newtonSLR = tmNoRefs (OthModel newtonSLRRC)
   [qw torque, qw momentOfInertia, qw angularAccel] 
   ([] :: [ConceptChunk]) [] [newtonSLRRel] [] "NewtonSecLawRotMot" newtonSLRNotes
 
