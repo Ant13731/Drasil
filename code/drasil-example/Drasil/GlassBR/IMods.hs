@@ -2,6 +2,7 @@ module Drasil.GlassBR.IMods (symb, iMods, iMods0, iMods1, pbIsSafe, lrIsSafe, in
 
 import Prelude hiding (exp)
 import Language.Drasil
+import Language.Drasil.Development (dumpRCQD)
 import Theory.Drasil (InstanceModel, imNoDeriv, qwC, ModelKinds (OthModel, EquationalModel))
 import Utils.Drasil
 
@@ -53,9 +54,9 @@ pbIsSafeQD = mkQuantDef' isSafePb (nounPhraseSP "Safety Req-Pb") pbIsSafeExpr
 pbIsSafeExpr :: Expr
 pbIsSafeExpr = sy probBr $< sy pbTol
 
--- pbIsSafeRC :: RelationConcept
--- pbIsSafeRC = makeRC "isSafePb" (nounPhraseSP "Safety Req-Pb")
---   EmptyS (sy isSafePb $= pbIsSafeExpr)
+pbIsSafeRC :: RelationConcept
+pbIsSafeRC = makeRC "isSafePb" (nounPhraseSP "Safety Req-Pb")
+  EmptyS (sy isSafePb $= pbIsSafeExpr)
 
 {--}
 
