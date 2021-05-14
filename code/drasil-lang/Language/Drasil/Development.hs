@@ -1,10 +1,11 @@
 {- re-export many things to simplify external use -}
 module Language.Drasil.Development (
   -- NounPhrase
-    NounPhrase(phraseNP,pluralNP)
+    NounPhrase(phraseNP, pluralNP)
   -- Expr
   , UFuncB(..), UFuncVec(..)
-  , ArithBinOp(..), BoolBinOp(..), EqBinOp(..), OrdBinOp(..)
+  , ArithBinOp(..), BoolBinOp(..), EqBinOp(..)
+  , LABinOp(..), OrdBinOp(..), VVVBinOp(..), VVNBinOp(..)
   -- Expr.Extract
   , dep, names, names', namesRI
   -- Sentence.Extract
@@ -20,9 +21,9 @@ import Control.Lens
 import Language.Drasil
 import Language.Drasil.NounPhrase.Core
 import Language.Drasil.Expr
-import Language.Drasil.Expr.Extract (dep, names', names, namesRI)
-import Language.Drasil.Expr.Precedence (precA, precB, eprec)
-import Language.Drasil.Sentence.Extract(sdep, lnames, lnames')
+import Language.Drasil.Expr.Extract
+import Language.Drasil.Expr.Precedence
+import Language.Drasil.Sentence.Extract
 
 -- dump common things between a RC and a QD
 dumpRCQD :: (HasUID a,
