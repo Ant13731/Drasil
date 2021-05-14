@@ -31,7 +31,7 @@ dumpRCQD :: (HasUID a,
             => 
             ChunkDB -> a -> IO ()
 dumpRCQD cdb_ trg = do
-  putStr "uid: "
+  putStr "uid (RC's internal ConceptChunk's UID/QD's internal QuantityDict's UID): "
   putStrLn (trg ^. uid)
 
   putStr "term: "
@@ -41,7 +41,7 @@ dumpRCQD cdb_ trg = do
     (Phrase s _ _ _) ->
       case s of
         EmptyS -> putStrLn "~EmptyS~"
-        (S str) -> putStrLn $ "S \"" ++ str ++ "\""
+        (S stri) -> putStrLn $ "S \"" ++ stri ++ "\""
         _ -> putStrLn "Not implemented yet!"
   
   putStr "getA: "
@@ -57,7 +57,7 @@ dumpRCQD cdb_ trg = do
   putStr "cdom: "
   print $ cdom trg
 
-  putStr "relat (RC's rel/QD's _equat): "
+  putStr "relat (RC's rel/QD's `sy QD $= _equat`): "
   print $ exprDoc cdb_ Equational Linear $ relat trg
 
 -- QDefinition has a few more things than a  RelationConcept
@@ -65,16 +65,16 @@ dumpQD :: ChunkDB -> QDefinition -> IO ()
 dumpQD cdb_ trg = do
   dumpRCQD cdb_ trg
 
-  putStr "typ: "
+  putStr "typ (QD's typ of internal quantitydict): "
   print $ trg ^. typ
 
-  putStr "symbol: "
+  putStr "symbol (QD's symbol of internal quantitydict): "
   print $ symbolDoc $ symbol trg Equational
 
-  putStr "defnExpr: "
+  putStr "defnExpr (QD's _equat): "
   print $ exprDoc cdb_ Equational Linear $ trg ^. defnExpr
 
-  putStr "getUnit: "
+  putStr "getUnit (QD's unit of internal quantitydict): "
   case getUnit trg of 
     Nothing -> putStrLn "~Nothing~"
     Just u -> putStrLn "NOT IMPLEMENTED YET"
