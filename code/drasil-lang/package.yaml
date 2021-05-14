@@ -25,3 +25,4 @@ library:
   - Language.Drasil
   - Language.Drasil.Development
   - Language.Drasil.ShortHands
+  - Language.Drasil.NounPhrase.Core

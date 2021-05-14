@@ -54,7 +54,7 @@ import Drasil.GlassBR.DataDefs (qDefns, configFp)
 import qualified Drasil.GlassBR.DataDefs as GB (dataDefs)
 import Drasil.GlassBR.Figures
 import Drasil.GlassBR.Goals (goals)
-import Drasil.GlassBR.IMods (symb, iMods, iMods0, iMods1, instModIntro, pbIsSafeExpr)
+import Drasil.GlassBR.IMods -- (symb, iMods, iMods0, iMods1, instModIntro, pbIsSafeExpr)
 import Drasil.GlassBR.References (astm2009, astm2012, astm2016, citations, rbrtsn2012)
 import Drasil.GlassBR.Requirements (funcReqs, inReqDesc, funcReqsTables, nonfuncReqs)
 import Drasil.GlassBR.Symbols (symbolsForTable, thisSymbols)
@@ -137,6 +137,20 @@ mkSRS = [RefSec $ RefProg intro [TUnits, tsymb [TSPurpose, SymbOrder], TAandA],
   AuxConstntSec $ AuxConsProg glassBR auxiliaryConstants,
   Bibliography,
   AppndxSec $ AppndxProg [appdxIntro, LlC demandVsSDFig, LlC dimlessloadVsARFig]]
+
+myTests :: IO ()
+myTests = do
+  putStrLn "pbIsSafeRC:\n"
+  dumpRCQD symbMap pbIsSafeRC
+
+  putStrLn "\n\n-----------------------------------------------------"
+  putStrLn "pbIsSafeQD:\n"
+  dumpQD symbMap pbIsSafeQD
+
+  putStrLn "\n\n-----------------------------------------------------"
+  putStrLn "relToQD symbMap pbIsSafeRC:\n"
+  dumpQD symbMap $ relToQD symbMap pbIsSafeRC
+
 
 symbMap :: ChunkDB
 symbMap = cdb thisSymbols (map nw acronyms ++ map nw thisSymbols ++ map nw con

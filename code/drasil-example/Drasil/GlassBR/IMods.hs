@@ -1,12 +1,15 @@
-module Drasil.GlassBR.IMods (symb, iMods, iMods0, iMods1, pbIsSafe, lrIsSafe, instModIntro, pbIsSafeExpr) where
+module Drasil.GlassBR.IMods (symb, iMods, iMods0, iMods1, pbIsSafe, lrIsSafe,
+  dumpRCQD, dumpQD, pbIsSafeQD, pbIsSafeRC, instModIntro, pbIsSafeExpr) where
 
 import Control.Lens ( (^.) )
 
 import Prelude hiding (exp)
 import Language.Drasil
 import Language.Drasil.Printers
+import Language.Drasil.NounPhrase.Core
 import Theory.Drasil (InstanceModel, imNoDeriv, qwC, ModelKinds (OthModel, EquationalModel))
 import Utils.Drasil
+import Database.Drasil
 
 import Drasil.GlassBR.DataDefs (probOfBreak, calofCapacity, calofDemand,
   pbTolUsr, qRef)
@@ -26,16 +29,20 @@ dumpRCQD :: (HasUID a,
              ConceptDomain a,
              ExprRelat a) 
             => 
-            a -> IO ()
-dumpRCQD trg = do
+            ChunkDB -> a -> IO ()
+dumpRCQD cdb_ trg = do
   putStr "uid: "
   putStrLn (trg ^. uid)
 
   putStr "term: "
-  -- case (trg ^. term) of
-  --   (ProperNoun s _) -> putStrLn s
-  --   (CommonNoun s _ _) -> putStrLn s
-  --   (Phrase _ _ _ _) -> putStrLn "PHRASE PRINT NOT IMPLEMENTED YET"
+  case trg ^. term of
+    (ProperNoun s _) -> putStrLn s
+    (CommonNoun s _ _) -> putStrLn s
+    (Phrase s _ _ _) ->
+      case s of
+        EmptyS -> putStrLn "~EmptyS~"
+        (S str) -> putStrLn $ "S \"" ++ str ++ "\""
+        _ -> putStrLn "Not implemented yet!"
   
   putStr "getA: "
   case getA trg of
@@ -43,32 +50,29 @@ dumpRCQD trg = do
     Nothing -> putStrLn "~Nothing~"
 
   putStr "defn: "
-  putStrLn "NOT IMPLEMENTED YET"
-  -- TODO: convert `defn trg` into a String?
+  case trg ^. defn of
+    EmptyS -> putStrLn "~EmptyS~"
+    _ -> putStrLn "NOT IMPLEMENTED YET"
 
   putStr "cdom: "
   print $ cdom trg
 
-  putStr "relat: "
-  putStrLn "NOT IMPLEMENTED YET"
-  -- print $ exprDoc $ relat trg
-  -- TODO: convert `relat trg` into a String?
+  putStr "relat (RC's rel/QD's _equat): "
+  print $ exprDoc cdb_ Equational Linear $ relat trg
 
 -- QDefinition has a few more things than a  RelationConcept
-dumpQD :: QDefinition -> IO ()
-dumpQD trg = do
-  dumpRCQD trg
+dumpQD :: ChunkDB -> QDefinition -> IO ()
+dumpQD cdb_ trg = do
+  dumpRCQD cdb_ trg
 
   putStr "typ: "
   print $ trg ^. typ
 
   putStr "symbol: "
   print $ symbolDoc $ symbol trg Equational
-  -- TODO: convert `symbol trg` into a String?
 
   putStr "defnExpr: "
-  putStrLn "NOT IMPLEMENTED YET"
-  -- TODO: convert `trg ^. defnExpr` into a String?
+  print $ exprDoc cdb_ Equational Linear $ trg ^. defnExpr
 
   putStr "getUnit: "
   case getUnit trg of 
@@ -116,7 +120,7 @@ pbIsSafeExpr :: Expr
 pbIsSafeExpr = sy probBr $< sy pbTol
 
 pbIsSafeRC :: RelationConcept
-pbIsSafeRC = makeRC "isSafePb" (nounPhraseSP "Safety Req-Pb")
+pbIsSafeRC = makeRC "safetyReqPb" (nounPhraseSP "Safety Req-Pb")
   EmptyS (sy isSafePb $= pbIsSafeExpr)
 
 {--}
