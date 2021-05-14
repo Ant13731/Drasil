@@ -1,8 +1,10 @@
 module Drasil.GlassBR.IMods (symb, iMods, iMods0, iMods1, pbIsSafe, lrIsSafe, instModIntro, pbIsSafeExpr) where
 
+import Control.Lens ( (^.) )
+
 import Prelude hiding (exp)
 import Language.Drasil
-import Language.Drasil.Development (dumpRCQD)
+import Language.Drasil.Printers
 import Theory.Drasil (InstanceModel, imNoDeriv, qwC, ModelKinds (OthModel, EquationalModel))
 import Utils.Drasil
 
@@ -14,6 +16,65 @@ import Drasil.GlassBR.Unitals (charWeight, demand, demandq, isSafeLR, isSafePb,
   lRe, pbTol, plateLen, plateWidth, probBr, standOffDist)
 
 import Data.Drasil.Concepts.Documentation (goal)
+
+
+-- dump common things between a RC and a QD
+dumpRCQD :: (HasUID a,
+             NamedIdea a,
+             Idea a,
+             Definition a,
+             ConceptDomain a,
+             ExprRelat a) 
+            => 
+            a -> IO ()
+dumpRCQD trg = do
+  putStr "uid: "
+  putStrLn (trg ^. uid)
+
+  putStr "term: "
+  -- case (trg ^. term) of
+  --   (ProperNoun s _) -> putStrLn s
+  --   (CommonNoun s _ _) -> putStrLn s
+  --   (Phrase _ _ _ _) -> putStrLn "PHRASE PRINT NOT IMPLEMENTED YET"
+  
+  putStr "getA: "
+  case getA trg of
+    Just s -> putStrLn s
+    Nothing -> putStrLn "~Nothing~"
+
+  putStr "defn: "
+  putStrLn "NOT IMPLEMENTED YET"
+  -- TODO: convert `defn trg` into a String?
+
+  putStr "cdom: "
+  print $ cdom trg
+
+  putStr "relat: "
+  putStrLn "NOT IMPLEMENTED YET"
+  -- print $ exprDoc $ relat trg
+  -- TODO: convert `relat trg` into a String?
+
+-- QDefinition has a few more things than a  RelationConcept
+dumpQD :: QDefinition -> IO ()
+dumpQD trg = do
+  dumpRCQD trg
+
+  putStr "typ: "
+  print $ trg ^. typ
+
+  putStr "symbol: "
+  print $ symbolDoc $ symbol trg Equational
+  -- TODO: convert `symbol trg` into a String?
+
+  putStr "defnExpr: "
+  putStrLn "NOT IMPLEMENTED YET"
+  -- TODO: convert `trg ^. defnExpr` into a String?
+
+  putStr "getUnit: "
+  case getUnit trg of 
+    Nothing -> putStrLn "~Nothing~"
+    Just u -> putStrLn "NOT IMPLEMENTED YET"
+
 
 iMods0 :: [InstanceModel]
 iMods0 = [pbIsSafe]
