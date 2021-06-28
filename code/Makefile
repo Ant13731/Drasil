@@ -3,7 +3,7 @@
 SHELL=/bin/bash
 
 # List of all known packages
-PACKAGES = lang utils build gool code theory database printers gen data docLang example website
+PACKAGES = lang utils build gool code theory database printers gen data docLang example
 
 # and associated package-level suffixes
 BUILD_P_SUFFIX = _build
@@ -257,14 +257,21 @@ deploy_lite: website
 	EXAMPLE_DIRS="$(EXAMPLE_DIRS)" MULTI_SRC_DIRS="$(MULTI_SRC_DIRS)" ANALYSIS_FOLDER="$(ANALYSIS_FOLDER)" \
 	DEPLOY_CODE_PATH_KV_SEP="$(DEPLOY_CODE_PATH_KV_SEP)" MAKE="$(MAKE)" "$(SHELL)" "$(SCRIPT_FOLDER)"deploy_stage.sh
 
+DOC_DEST=docs/
+SRS_DEST=srs/
+DOX_DEST=doxygen/
+EXAMPLE_DEST=examples/
+CUR_DIR="$(PWD)/"
+
 website: 
 	rm -rf $(WEBSITE_FOLDER)
 	mkdir -p $(WEBSITE_FOLDER)
 	BUILD_FOLDER="$(BUILD_FOLDER)" DEPLOY_FOLDER="$(DEPLOY_FOLDER)" GRAPH_FOLDER="$(GRAPH_FOLDER)" \
 	EXAMPLE_DIRS="$(EXAMPLE_DIRS)" MULTI_SRC_DIRS="$(MULTI_SRC_DIRS)" ANALYSIS_FOLDER="$(ANALYSIS_FOLDER)" \
 	DEPLOY_CODE_PATH_KV_SEP="$(DEPLOY_CODE_PATH_KV_SEP)"
-	cd "drasil-website/" && stack build --ghc-options="-Wall"
-	cd "drasil-website/" && stack exec -- website
+	stack build --ghc-options="-Wall" DEPLOY_FOLDER="$(CUR_DIR)$(DEPLOY_FOLDER)" DOCS_FOLDER="$(DOC_DEST)" DOX_FOLDER="$(DOX_DEST)" EXAMPLES_FOLDER="$(EXAMPLE_DEST)" \
+    SRS_FOLDER_FRAG="$(SRS_DEST)" GRAPH_FOLDER="$(GRAPH_FOLDER)"
+	stack exec -- website
 # This rule is for use with developing deployment layout locally. As part of it, it ensures all needed
 # dependencies exist. One of the downsides is we ensure all files are re-generated which means the TeX
 # files appear newer and thus PDF's are regenerated. If you want to "just generate the structure,
@@ -284,4 +291,4 @@ clean_artifacts cleanArtifacts: $(CLEAN_FOLDERS)
 clean: clean_artifacts
 	- stack clean
 
-.PHONY: clean clean_artifacts cleanArtifacts code hlint hot_hlint analysis tex doc debug prog test graphs graphmod check_stack graphs deploy_code_path deploy deploy_lite all $(GOOLTEST) $(ALL_EXPANDED_TARGETS)
+.PHONY: clean clean_artifacts cleanArtifacts code hlint hot_hlint analysis tex doc debug prog test graphs graphmod check_stack graphs website deploy_code_path deploy deploy_lite all $(GOOLTEST) $(ALL_EXPANDED_TARGETS)
