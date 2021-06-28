@@ -1,4 +1,11 @@
+digraph alltypes {
 	subgraph analyiss {
+	}
+	subgraph body {
+		subgraph folderlocation{
+		FolderLocation -> FilePath;
+		FolderLocation	[shape=oval, color=cyan3, label=FolderLocation];
+		}
 	}
 	subgraph caestudys {
 		subgraph modularity{
@@ -48,9 +55,4 @@
 	}
 	subgraph main {
 	}
-	subgraph webites {
-		subgraph folderlocation{
-		FolderLocation -> FilePath;
-		FolderLocation	[shape=oval, color=cyan3, label=FolderLocation];
-		}
-	}
+}

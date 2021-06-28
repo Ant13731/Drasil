@@ -3695,6 +3695,12 @@ digraph alltypes {
 	}
 	subgraph analyiss {
 	}
+	subgraph body {
+		subgraph folderlocation{
+		FolderLocation -> FilePath;
+		FolderLocation	[shape=oval, color=cyan3, label=FolderLocation];
+		}
+	}
 	subgraph caestudys {
 		subgraph modularity{
 		Modularity	[shape=oval, color=darkviolet, label=Modularity];
@@ -3742,11 +3748,5 @@ digraph alltypes {
 	subgraph introduction {
 	}
 	subgraph main {
-	}
-	subgraph webites {
-		subgraph folderlocation{
-		FolderLocation -> FilePath;
-		FolderLocation	[shape=oval, color=cyan3, label=FolderLocation];
-		}
 	}
 }
