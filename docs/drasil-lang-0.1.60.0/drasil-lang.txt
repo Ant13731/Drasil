@@ -2108,7 +2108,13 @@ nounPhraseSent :: Sentence -> NP
 -- | A Document has a Title (<a>Sentence</a>), Author(s) (<a>Sentence</a>),
 --   and <a>Section</a>s which hold the contents of the document.
 data Document
-Document :: Title -> Author -> [Section] -> Document
+Document :: Title -> Author -> ShowTableOfContents -> [Section] -> Document
+
+-- | Determines whether or not the table of contents appears on the
+--   generated artifacts.
+data ShowTableOfContents
+ToC :: ShowTableOfContents
+NoToC :: ShowTableOfContents
 
 -- | Types of definitions (general, instance, theory, or data).
 data DType
@@ -2188,6 +2194,10 @@ mkParagraph :: Sentence -> Contents
 --   <a>RawContent</a> first.
 mkRawLC :: RawContent -> Reference -> LabelledContent
 
+-- | Manually removes the first section of a document (table of contents
+--   section).
+checkToC :: Document -> Document
+
 -- | Smart constructor for labelled content chunks.
 llcc :: Reference -> RawContent -> LabelledContent
 
@@ -2264,10 +2274,6 @@ makeFigRef :: String -> Reference
 -- | Create a reference for a section. Takes in the name of a section and a
 --   shortname for the section.
 makeSecRef :: String -> Sentence -> Reference
-
--- | Create a reference for a list. Takes in the name of the list and a
---   shortname for the list.
-makeLstRef :: String -> Sentence -> Reference
 
 -- | Create a reference for a <a>URI</a>.
 makeURI :: UID -> String -> ShortName -> Reference

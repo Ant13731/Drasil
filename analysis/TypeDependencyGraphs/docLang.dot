@@ -215,8 +215,6 @@ digraph alltypes {
 		ModRow	[shape=oval, color=red2, label=ModRow];
 		}
 	}
-	subgraph labels {
-	}
 	subgraph refhelpers {
 		subgraph modeldb{
 		ModelDB -> RefMapTheoryModel;
@@ -252,6 +250,8 @@ digraph alltypes {
 	}
 	subgraph tableofabbandacronyms {
 	}
+	subgraph tableofcontents {
+	}
 	subgraph tableofsymbols {
 	}
 	subgraph tableofunits {
@@ -260,7 +260,6 @@ digraph alltypes {
 	}
 	subgraph docdecl {
 		subgraph docsection{
-		DocSection -> RefSec;
 		DocSection	[shape=oval, color=darkviolet, label=DocSection];
 		}
 		subgraph ssdsub{

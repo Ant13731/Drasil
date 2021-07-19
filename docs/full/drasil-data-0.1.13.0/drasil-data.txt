@@ -89,6 +89,7 @@ parnasClements1986 :: Citation
 smithLai2005 :: Citation
 lineSource :: Citation
 pointSource :: Citation
+hibbeler2004 :: Citation
 dampingSource :: Citation
 accelerationWiki :: Citation
 velocityWiki :: Citation
@@ -186,6 +187,7 @@ typUnc :: CI
 sec :: CI
 softReqSpec :: NP
 abbreviation :: NamedChunk
+acronym :: NamedChunk
 analysis :: NamedChunk
 appendix :: NamedChunk
 aspect :: NamedChunk
@@ -317,7 +319,7 @@ corSol :: NamedChunk
 orgOfDoc :: NamedChunk
 propOfCorSol :: NamedChunk
 prpsOfDoc :: NamedChunk
-refmat :: NamedChunk
+refMat :: NamedChunk
 reqInput :: NamedChunk
 scpOfReq :: NamedChunk
 tAuxConsts :: NamedChunk
@@ -326,6 +328,7 @@ tOfUnit :: NamedChunk
 termAndDef :: NamedChunk
 traceyMandG :: NamedChunk
 vav :: NamedChunk
+tOfCont :: NamedChunk
 scpOfTheProj :: (NamedChunk -> Sentence) -> NamedChunk
 designDoc :: NamedChunk
 fullForm :: NamedChunk
@@ -642,6 +645,7 @@ kinematics :: ConceptChunk
 frequency :: ConceptChunk
 period :: ConceptChunk
 motion :: ConceptChunk
+chgMomentum :: ConceptChunk
 oneD :: CI
 twoD :: CI
 threeD :: CI
@@ -756,6 +760,7 @@ tension :: UnitalChunk
 angularFrequency :: UnitalChunk
 period :: UnitalChunk
 frequency :: UnitalChunk
+chgMomentum :: UnitalChunk
 constant :: Symbol
 final :: Symbol
 initial :: Symbol
