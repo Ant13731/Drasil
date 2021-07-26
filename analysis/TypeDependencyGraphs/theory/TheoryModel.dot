@@ -6,9 +6,9 @@ TheoryModel -> QuantityDict;
 TheoryModel -> ConceptChunk;
 TheoryModel -> QDefinition;
 TheoryModel -> DisplayExpr;
-TheoryModel -> Reference;
+TheoryModel -> DecRef;
 TheoryModel -> ShortName;
 TheoryModel -> String;
 TheoryModel -> Sentence;
-TheoryModel	[shape=oval, color=cyan3, label=TheoryModel];
+TheoryModel	[shape=oval, color=cyan3, label="TheoryModel"];
 }
