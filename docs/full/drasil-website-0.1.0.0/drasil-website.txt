@@ -584,11 +584,12 @@ footer :: FolderLocation -> Section
 -- | <a>footer</a> contents.
 copyrightInfo :: Sentence
 
-
--- | Performs IO actions to get file path information and then generate an
---   updated Drasil website.
-module Drasil.Website.Main
-
--- | Collect environment variables, place them in <a>FolderLocation</a>,
---   and generate the Drasil website.
-main :: IO ()
+module Paths_drasil_website
+version :: Version
+getBinDir :: IO FilePath
+getLibDir :: IO FilePath
+getDynLibDir :: IO FilePath
+getDataDir :: IO FilePath
+getLibexecDir :: IO FilePath
+getDataFileName :: FilePath -> IO FilePath
+getSysconfDir :: IO FilePath

@@ -1,4 +1,6 @@
 digraph alltypes {
+	subgraph main {
+	}
 	subgraph analyiss {
 	}
 	subgraph body {
@@ -32,7 +34,5 @@ digraph alltypes {
 		}
 	}
 	subgraph introduction {
-	}
-	subgraph main {
 	}
 }

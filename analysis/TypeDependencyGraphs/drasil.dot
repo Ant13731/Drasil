@@ -3887,6 +3887,8 @@ digraph alltypes {
 	}
 	subgraph drails {
 	}
+	subgraph main {
+	}
 	subgraph analyiss {
 	}
 	subgraph body {
@@ -3920,7 +3922,5 @@ digraph alltypes {
 		}
 	}
 	subgraph introduction {
-	}
-	subgraph main {
 	}
 }
