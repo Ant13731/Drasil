@@ -34,9 +34,6 @@ drasilAnalysisTitle :: Sentence
 -- | Analysis section introduction.
 analysisIntro :: Sentence
 
--- | Analysis section reference.
-analysisSecRef :: Reference
-
 -- | Gathers all references used in this file.
 analysisRefs :: FilePath -> FilePath -> FilePath -> FilePath -> [String] -> [Reference]
 
@@ -127,12 +124,6 @@ folderList :: FilePath -> [String] -> RawContent
 -- | Helper to create the list items for dependency graph pdfs.
 folderListItems :: FilePath -> [String] -> [ItemType]
 
--- | Create section reference for Package Dependency Graphs.
-graphSecRef :: Reference
-
--- | All references used in the Package Dependency Graphs subsection.
-graphRefs :: FilePath -> [String] -> [Reference]
-
 
 -- | Display Drasil documentation nicely for the website.
 module Drasil.Website.Documentation
@@ -155,10 +146,7 @@ docsRef :: FilePath -> Reference
 --   variations).
 fullDocsRef :: FilePath -> Reference
 
--- | Section Reference.
-docsSecRef :: Reference
-
--- | Creates all references used in this file.
+-- | Gathers all references used in this file.
 docRefs :: FilePath -> [Reference]
 
 
@@ -180,11 +168,11 @@ E :: SystemInformation -> Sentence -> [Choices] -> FilePath -> FilePath -> Examp
 --   have more than one set of choices, so we need a list.
 [choicesE] :: Example -> [Choices]
 
--- | Generated documents &amp; code path.
-[srsPath] :: Example -> FilePath
+-- | Generated code path.
+[codePath] :: Example -> FilePath
 
--- | Generated doxygen path
-[doxPath] :: Example -> FilePath
+-- | Generated documents &amp; doxygen path
+[srsDoxPath] :: Example -> FilePath
 
 -- | Records example system information.
 allExampleSI :: [SystemInformation]
@@ -292,12 +280,12 @@ getSRSRef :: FilePath -> String -> String -> Reference
 --   suffix should only be either html or pdf.
 getSRSPath :: FilePath -> String -> String -> FilePath
 
--- | Uses <tt>repoRt</tt> path (srsPath in this module).
+-- | Uses <tt>repoRt</tt> path (codePath in this module).
 --   
 --   Get the file paths for generated code and doxygen locations.
 getCodePath :: FilePath -> String -> String -> FilePath
 
--- | Uses <tt>exRt</tt> path (doxPath in this module).
+-- | Uses <tt>exRt</tt> path (srsDoxPath in this module).
 --   
 --   Get the file paths for generated code and doxygen locations.
 getDoxPath :: FilePath -> String -> String -> FilePath
@@ -316,9 +304,6 @@ getDoxRefDB :: Example -> [Reference]
 -- | Helper to pull the system name (abbreviation) from an <a>Example</a>.
 getAbrv :: Example -> String
 
--- | Example section reference.
-exampleSecRef :: Reference
-
 
 -- | Case Studies table for the different choices available when generating
 --   code from Drasil. To be used in the Drasil website.
@@ -326,12 +311,6 @@ module Drasil.Website.CaseStudy
 
 -- | Creates the Case Study Section.
 caseStudySec :: Section
-
--- | Gathers all references used in this file.
-caseStudyRefs :: [Reference]
-
--- | Case study section reference.
-caseStudySecRef :: Reference
 
 -- | Section title.
 caseStudiesTitle :: String
@@ -344,9 +323,6 @@ legendIntro :: String
 
 -- | Creates the Case Study Table
 mkCaseTable :: RawContent
-
--- | Case Study Table Reference.
-caseStudyTabRef :: Reference
 
 -- | Holds individual case studies. System info may not be needed, but it
 --   is still nice to keep around for now.
@@ -466,12 +442,6 @@ introParagraph1 :: Reference -> Reference -> Sentence
 -- | Paragraph to describe the layout of the Drasil website.
 introParagraph2 :: Reference -> Reference -> Reference -> Sentence
 
--- | Section reference.
-introSecRef :: Reference
-
--- | Gathers all references used in this file.
-introRefs :: Reference -> Reference -> Reference -> Reference -> Reference -> [Reference]
-
 
 -- | Gathers and organizes all the information for the <a>Drasil
 --   website</a>.
@@ -550,9 +520,6 @@ usedDB :: ChunkDB
 -- | Holds all references and links used in the website.
 allRefs :: FolderLocation -> [Reference]
 
--- | Each section needs its own reference. Start with the header section.
-headerSecRef :: Reference
-
 -- | Used for system name and kind inside of <a>si</a>.
 webName :: CI
 
@@ -564,10 +531,6 @@ headerSec :: Section
 
 -- | For the drasil tree image on the website.
 imageContent :: LabelledContent
-
--- | <a>LabelledContent</a> needs a reference. Treats the image like an SRS
---   Figure.
-imageRef :: Reference
 
 -- | Used for the repository link.
 gitHubRef :: Reference
