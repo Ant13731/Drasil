@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span class="hs-keyword">module</span><span> </span><span class="hs-identifier">Drasil.SWHS.Unitals</span><span> </span><span class="hs-keyword">where</span><span> </span><span class="hs-comment">-- all of this file is exported</span><span>
 </span><span id="line-2"></span><span>
 </span><span id="line-3"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Language.Drasil</span></span><span>
-</span><span id="line-4"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Language.Drasil.Display</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">Symbol</span></span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">Concat</span></span><span class="hs-special">)</span><span class="hs-special">)</span><span>
+</span><span id="line-4"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Language.Drasil.Display</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">Symbol</span></span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">Atop</span></span><span class="hs-special">)</span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">Decoration</span></span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">Delta</span></span><span class="hs-special">)</span><span class="hs-special">)</span><span>
 </span><span id="line-5"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Language.Drasil.ShortHands</span></span><span>
 </span><span id="line-6"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Utils.Drasil.Concepts</span></span><span>
 </span><span id="line-7"></span><span>
@@ -591,12 +591,14 @@ String -&gt; NP -&gt; String -&gt; Symbol -&gt; u -&gt; UnitalChunk
 </span><span class="hs-identifier hs-var">uc'</span></span><span> </span><span class="annot"><span class="hs-string">&quot;deltaT&quot;</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">String -&gt; NP
 </span><span class="hs-identifier hs-var">nounPhraseSP</span></span><span> </span><span class="annot"><span class="hs-string">&quot;change in temperature&quot;</span></span><span class="hs-special">)</span><span>
 </span><span id="line-169"></span><span>  </span><span class="annot"><span class="hs-string">&quot;change in the average kinetic energy of a given material&quot;</span></span><span>
-</span><span id="line-170"></span><span>  </span><span class="hs-special">(</span><span class="annot"><span class="annottext">[Symbol] -&gt; Symbol
-</span><span class="hs-identifier hs-var">Concat</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Symbol
-</span><span class="hs-identifier hs-var">cDelta</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">UnitalChunk -&gt; Symbol
+</span><span id="line-170"></span><span>  </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Decoration -&gt; Symbol -&gt; Symbol
+</span><span class="hs-identifier hs-var">Atop</span></span><span> </span><span class="annot"><span class="annottext">Decoration
+</span><span class="hs-identifier hs-var">Delta</span></span><span> </span><span class="annot"><span class="annottext">(Symbol -&gt; Symbol) -&gt; Symbol -&gt; Symbol
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">UnitalChunk -&gt; Symbol
 forall q. HasSymbol q =&gt; q -&gt; Symbol
 </span><span class="hs-identifier hs-var">eqSymb</span></span><span> </span><span class="annot"><span class="annottext">UnitalChunk
-</span><span class="hs-identifier hs-var">temp</span></span><span class="hs-special">]</span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">UnitDefn
+</span><span class="hs-identifier hs-var">temp</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">UnitDefn
 </span><span class="hs-identifier hs-var">centigrade</span></span><span>
 </span><span id="line-171"></span><span>
 </span><span id="line-172"></span><span id="tau"><span class="annot"><span class="annottext">tau :: UnitalChunk
@@ -1653,7 +1655,7 @@ String
 forall c d. (NamedIdea c, NamedIdea d) =&gt; c -&gt; d -&gt; NP
 </span><span class="hs-operator hs-var">`of_`</span></span><span> </span><span class="annot"><span class="annottext">ConceptChunk
 </span><a href="Drasil.SWHS.Concepts.html#water"><span class="hs-identifier hs-var">water</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-357"></span><span>  </span><span class="annot"><span class="hs-string">&quot;nass per unit volume of water&quot;</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Symbol -&gt; Stage -&gt; Symbol
+</span><span id="line-357"></span><span>  </span><span class="annot"><span class="hs-string">&quot;mass per unit volume of water&quot;</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Symbol -&gt; Stage -&gt; Symbol
 </span><span class="hs-identifier hs-var">autoStage</span></span><span> </span><span class="annot"><span class="annottext">(Symbol -&gt; Stage -&gt; Symbol) -&gt; Symbol -&gt; Stage -&gt; Symbol
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Symbol -&gt; Symbol -&gt; Symbol

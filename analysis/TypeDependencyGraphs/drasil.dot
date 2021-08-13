@@ -37,9 +37,9 @@ digraph alltypes {
 	}
 	subgraph commonidea {
 		subgraph ci{
-		CI -> UID;
-		CI -> NP;
+		CI -> NamedChunk;
 		CI -> String;
+		CI -> UID;
 		CI	[shape=oval, color=cyan3, label="CI"];
 		}
 	}
@@ -70,8 +70,7 @@ digraph alltypes {
 	}
 	subgraph eq {
 		subgraph qdefinition{
-		QDefinition -> QuantityDict;
-		QDefinition -> Sentence;
+		QDefinition -> DefinedQuantityDict;
 		QDefinition -> UID;
 		QDefinition -> Expr;
 		QDefinition	[shape=oval, color=cyan3, label="QDefinition"];
@@ -269,8 +268,6 @@ digraph alltypes {
 		Identifier	[shape=oval, color=red2, label="Identifier"];
 		}
 	}
-	subgraph diplays {
-	}
 	subgraph extract {
 	}
 	subgraph math {
@@ -287,6 +284,16 @@ digraph alltypes {
 		IRefProg -> UID;
 		IRefProg	[shape=oval, color=darkviolet, label="IRefProg"];
 		}
+	}
+	subgraph convert {
+	}
+	subgraph development {
+	}
+	subgraph extract {
+	}
+	subgraph math {
+	}
+	subgraph precedence {
 	}
 	subgraph core {
 		subgraph capitalizationrule{
@@ -407,24 +414,6 @@ digraph alltypes {
 	}
 	subgraph diplays {
 	}
-	subgraph diplayclassess {
-	}
-	subgraph diplayexprs {
-		subgraph displaybinop{
-		DisplayBinOp	[shape=oval, color=darkviolet, label="DisplayBinOp"];
-		}
-		subgraph displayassocbinop{
-		DisplayAssocBinOp	[shape=oval, color=darkviolet, label="DisplayAssocBinOp"];
-		}
-		subgraph displayexpr{
-		DisplayExpr -> Expr;
-		DisplayExpr -> DisplayExpr;
-		DisplayExpr -> Space;
-		DisplayExpr -> DisplayBinOp;
-		DisplayExpr -> DisplayAssocBinOp;
-		DisplayExpr	[shape=oval, color=darkviolet, label="DisplayExpr"];
-		}
-	}
 	subgraph document {
 		subgraph section{
 		Section -> Title;
@@ -432,10 +421,25 @@ digraph alltypes {
 		Section -> Reference;
 		Section	[shape=oval, color=cyan3, label="Section"];
 		}
+		subgraph section{
+		Section -> Depth;
+		Section -> SecHeader;
+		Section -> Content;
+		Section	[shape=oval, color=cyan3, label="Section"];
+		}
 		subgraph seccons{
 		SecCons -> Section;
 		SecCons -> Contents;
 		SecCons	[shape=oval, color=darkviolet, label="SecCons"];
+		}
+		subgraph secheader{
+		SecHeader -> Title;
+		SecHeader -> Reference;
+		SecHeader	[shape=oval, color=darkviolet, label="SecHeader"];
+		}
+		subgraph content{
+		Content -> Contents;
+		Content	[shape=oval, color=darkviolet, label="Content"];
 		}
 		subgraph document{
 		Document -> Title;
@@ -530,7 +534,88 @@ digraph alltypes {
 		Variable	[shape=oval, color=red2, label="Variable"];
 		}
 	}
+	subgraph exprclasess {
+	}
 	subgraph mics {
+	}
+	subgraph modelexpr {
+		subgraph arithbinop{
+		ArithBinOp	[shape=oval, color=darkviolet, label="ArithBinOp"];
+		}
+		subgraph eqbinop{
+		EqBinOp	[shape=oval, color=darkviolet, label="EqBinOp"];
+		}
+		subgraph boolbinop{
+		BoolBinOp	[shape=oval, color=darkviolet, label="BoolBinOp"];
+		}
+		subgraph labinop{
+		LABinOp	[shape=oval, color=darkviolet, label="LABinOp"];
+		}
+		subgraph ordbinop{
+		OrdBinOp	[shape=oval, color=darkviolet, label="OrdBinOp"];
+		}
+		subgraph vvvbinop{
+		VVVBinOp	[shape=oval, color=darkviolet, label="VVVBinOp"];
+		}
+		subgraph vvnbinop{
+		VVNBinOp	[shape=oval, color=darkviolet, label="VVNBinOp"];
+		}
+		subgraph assocarithoper{
+		AssocArithOper	[shape=oval, color=darkviolet, label="AssocArithOper"];
+		}
+		subgraph assocbooloper{
+		AssocBoolOper	[shape=oval, color=darkviolet, label="AssocBoolOper"];
+		}
+		subgraph ufunc{
+		UFunc	[shape=oval, color=darkviolet, label="UFunc"];
+		}
+		subgraph ufuncb{
+		UFuncB	[shape=oval, color=darkviolet, label="UFuncB"];
+		}
+		subgraph ufuncvv{
+		UFuncVV	[shape=oval, color=darkviolet, label="UFuncVV"];
+		}
+		subgraph ufuncvn{
+		UFuncVN	[shape=oval, color=darkviolet, label="UFuncVN"];
+		}
+		subgraph statbinop{
+		StatBinOp	[shape=oval, color=darkviolet, label="StatBinOp"];
+		}
+		subgraph spacebinop{
+		SpaceBinOp	[shape=oval, color=darkviolet, label="SpaceBinOp"];
+		}
+		subgraph modelexpr{
+		ModelExpr -> Double;
+		ModelExpr -> ModelExpr;
+		ModelExpr -> Integer;
+		ModelExpr -> String;
+		ModelExpr -> Space;
+		ModelExpr -> AssocArithOper;
+		ModelExpr -> AssocBoolOper;
+		ModelExpr -> DerivType;
+		ModelExpr -> UID;
+		ModelExpr -> Completeness;
+		ModelExpr -> UFunc;
+		ModelExpr -> UFuncB;
+		ModelExpr -> UFuncVV;
+		ModelExpr -> UFuncVN;
+		ModelExpr -> ArithBinOp;
+		ModelExpr -> BoolBinOp;
+		ModelExpr -> EqBinOp;
+		ModelExpr -> LABinOp;
+		ModelExpr -> OrdBinOp;
+		ModelExpr -> SpaceBinOp;
+		ModelExpr -> StatBinOp;
+		ModelExpr -> VVVBinOp;
+		ModelExpr -> VVNBinOp;
+		ModelExpr -> DomainDesc;
+		ModelExpr -> RealInterval;
+		ModelExpr	[shape=oval, color=darkviolet, label="ModelExpr"];
+		}
+		subgraph variable{
+		Variable -> String;
+		Variable	[shape=oval, color=red2, label="Variable"];
+		}
 	}
 	subgraph nounpraehs {
 		subgraph capitalization{
@@ -636,10 +721,6 @@ digraph alltypes {
 		}
 		subgraph symbol{
 		Symbol -> String;
-		Symbol -> Int;
-		Symbol -> Special;
-		Symbol -> Decoration;
-		Symbol -> Symbol;
 		Symbol	[shape=oval, color=darkviolet, label="Symbol"];
 		}
 	}
@@ -1562,9 +1643,69 @@ digraph alltypes {
 	}
 	subgraph patterntets {
 	}
+	subgraph notebook {
+	}
 	subgraph references {
 	}
 	subgraph srs {
+	}
+	subgraph core {
+		subgraph docsection{
+		DocSection -> IntrodSec;
+		DocSection -> BodySec;
+		DocSection -> SmmrySec;
+		DocSection -> ApndxSec;
+		DocSection	[shape=oval, color=darkviolet, label="DocSection"];
+		}
+		subgraph introdsec{
+		IntrodSec -> Contents;
+		IntrodSec -> IntrodSub;
+		IntrodSec	[shape=oval, color=darkviolet, label="IntrodSec"];
+		}
+		subgraph introdsub{
+		IntrodSub -> Sentence;
+		IntrodSub -> IntrodSub;
+		IntrodSub	[shape=oval, color=darkviolet, label="IntrodSub"];
+		}
+		subgraph bodysub{
+		BodySub -> Contents;
+		BodySub -> BodySub;
+		BodySub -> Section;
+		BodySub	[shape=oval, color=darkviolet, label="BodySub"];
+		}
+		subgraph apndxsec{
+		ApndxSec	[shape=oval, color=darkgreen, label="ApndxSec"];
+		}
+		subgraph bodysec{
+		BodySec -> BodySub;
+		BodySec	[shape=oval, color=darkgreen, label="BodySec"];
+		}
+		subgraph smmrysec{
+		SmmrySec -> Contents;
+		SmmrySec	[shape=oval, color=darkgreen, label="SmmrySec"];
+		}
+		subgraph nbdesc{
+		NBDesc -> DocSection;
+		NBDesc	[shape=oval, color=red2, label="NBDesc"];
+		}
+	}
+	subgraph documentlanguage {
+	}
+	subgraph nbdecl {
+		subgraph nbsection{
+		NbSection -> IntrodSec;
+		NbSection -> BodySec;
+		NbSection -> SmmrySec;
+		NbSection -> ApndxSec;
+		NbSection -> SystemInformation;
+		NbSection -> NBDecl;
+		NbSection -> NBDesc;
+		NbSection	[shape=oval, color=darkviolet, label="NbSection"];
+		}
+		subgraph nbdecl{
+		NBDecl -> NbSection;
+		NBDecl	[shape=oval, color=red2, label="NBDecl"];
+		}
 	}
 	subgraph core {
 		subgraph docsection{
@@ -1797,6 +1938,10 @@ digraph alltypes {
 	}
 	subgraph units {
 	}
+	subgraph body {
+	}
+	subgraph introduction {
+	}
 	subgraph auxiliarycontantss {
 	}
 	subgraph generalsytdescs {
@@ -1897,6 +2042,8 @@ digraph alltypes {
 	}
 	subgraph extractdocdecs {
 	}
+	subgraph srsdocument {
+	}
 	subgraph tracetable {
 	}
 	subgraph print {
@@ -1944,6 +2091,21 @@ digraph alltypes {
 		OpenClose	[shape=oval, color=darkviolet, label="OpenClose"];
 		}
 	}
+	subgraph helpers {
+		subgraph variation{
+		Variation -> td;
+		Variation -> figure;
+		Variation -> li;
+		Variation -> pa;
+		Variation -> ba;
+		Variation -> Doc;
+		Variation	[shape=oval, color=darkviolet, label="Variation"];
+		}
+	}
+	subgraph print {
+	}
+	subgraph print {
+	}
 	subgraph createmd {
 		subgraph seperator{
 		Seperator -> Doc;
@@ -1958,13 +2120,13 @@ digraph alltypes {
 	}
 	subgraph codeexpr {
 	}
-	subgraph diplayexprs {
-	}
 	subgraph document {
 	}
 	subgraph expr {
 	}
 	subgraph helpers {
+	}
+	subgraph modelexpr {
 	}
 	subgraph sentence {
 	}
@@ -2332,7 +2494,7 @@ digraph alltypes {
 		TheoryModel -> QuantityDict;
 		TheoryModel -> ConceptChunk;
 		TheoryModel -> QDefinition;
-		TheoryModel -> DisplayExpr;
+		TheoryModel -> ModelExpr;
 		TheoryModel -> DecRef;
 		TheoryModel -> ShortName;
 		TheoryModel -> String;
@@ -3700,6 +3862,18 @@ digraph alltypes {
 	}
 	subgraph main {
 	}
+	subgraph analyiss {
+	}
+	subgraph body {
+	}
+	subgraph introsection {
+	}
+	subgraph main {
+	}
+	subgraph motion {
+	}
+	subgraph review {
+	}
 	subgraph asumptionss {
 	}
 	subgraph body {
@@ -3822,10 +3996,12 @@ digraph alltypes {
 	}
 	subgraph formats {
 		subgraph doctype{
-		DocType	[shape=oval, color=darkviolet, label="DocType"];
+		DocType -> DocType;
+		DocType -> Format;
+		DocType	[shape=oval, color=cyan3, label="DocType"];
 		}
 		subgraph docspec{
-		DocSpec -> DocType;
+		DocSpec -> DocChoices;
 		DocSpec -> Filename;
 		DocSpec	[shape=oval, color=darkviolet, label="DocSpec"];
 		}

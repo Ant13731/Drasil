@@ -54,6 +54,11 @@ figLaunch :: LabelledContent
 module Drasil.Projectile.Goals
 goals :: [ConceptInstance]
 
+module Drasil.Projectile.Lesson.IntroSection
+introContext :: Contents
+reasonList :: Contents
+overviewParagraph :: Contents
+
 module Drasil.Projectile.References
 citations :: BibRef
 
@@ -92,6 +97,7 @@ speed' :: Expr
 rectVelDerivEqn1 :: Expr
 rectVelDerivEqn2 :: Expr
 scalarPos' :: Expr
+rectNoTime :: Expr
 rectPosDerivEqn1 :: Expr
 rectPosDerivEqn2 :: Expr
 rectPosDerivEqn3 :: Expr
@@ -101,6 +107,62 @@ positionXY :: Expr
 velocityXY :: Expr
 accelerationXY :: Expr
 constAccelXY :: Expr
+lcrectVel :: LabelledContent
+lcrectPos :: LabelledContent
+lcrectNoTime :: LabelledContent
+horMotionEqn1 :: Expr
+horMotionEqn2 :: Expr
+verMotionEqn1 :: Expr
+verMotionEqn2 :: Expr
+verMotionEqn3 :: Expr
+eqnRefs :: [Reference]
+
+module Drasil.Projectile.Lesson.Review
+reviewContent :: [Contents]
+reviewContextP1 :: Contents
+reviewEqns :: Contents
+reviewContextP2 :: Contents
+
+module Drasil.Projectile.Lesson.Motion
+motionContextP1 :: Contents
+motionContextP2 :: Contents
+horMotion :: Section
+verMotion :: Section
+summary :: Section
+resourcePath :: String
+figCSandA :: LabelledContent
+equationsSents :: [Sentence]
+horMotionEqns :: [Expr]
+verMotionEqns :: [Expr]
+motionSent :: Sentence
+figRefs :: [Reference]
+foot :: UnitDefn
+accelinftU :: UnitDefn
+
+module Drasil.Projectile.Lesson.Analysis
+coorSyst :: Section
+kinematicEq :: Section
+horMotionAna :: Section
+verMotionAna :: Section
+coorSystContext :: Contents
+kinematicContext :: Contents
+horMotionContext :: Contents
+verMotionContext :: Contents
+
+module Drasil.Projectile.Lesson.Body
+nb :: Document
+printSetting :: PrintingInformation
+mkNB :: NBDecl
+si :: SystemInformation
+symbMap :: ChunkDB
+usedDB :: ChunkDB
+refDB :: ReferenceDB
+projectileMotion :: CI
+mAndaintro :: Contents
+allRefs :: [Reference]
+
+module Drasil.Projectile.Lesson.Main
+main :: IO ()
 
 module Drasil.Projectile.GenDefs
 genDefns :: [GenDefn]

@@ -1,5 +1,6 @@
 digraph gen{
 DocType	[shape=oval, color=turquoise4, label="DocType"];
+DocChoices	[shape=oval, color=turquoise4, label="DocChoices"];
 DocSpec	[shape=oval, color=turquoise4, label="DocSpec"];
 DocClass	[shape=oval, color=turquoise4, label="DocClass"];
 ExDoc	[shape=oval, color=turquoise4, label="ExDoc"];

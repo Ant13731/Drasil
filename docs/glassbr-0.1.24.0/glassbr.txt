@@ -229,7 +229,7 @@ qRef :: Sentence
 configFp :: [String]
 
 module Drasil.GlassBR.IMods
-symb :: [DefinedQuantityDict]
+symb :: [UnitalChunk]
 iMods :: [InstanceModel]
 pbIsSafe :: InstanceModel
 lrIsSafe :: InstanceModel
