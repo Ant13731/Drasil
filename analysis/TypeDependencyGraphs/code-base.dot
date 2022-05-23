@@ -15,6 +15,8 @@ digraph alltypes {
 		CodeFuncChunk -> CodeChunk;
 		}
 	}
+	subgraph class {
+	}
 	subgraph convert {
 	}
 	subgraph development {
@@ -65,10 +67,8 @@ digraph alltypes {
 		}
 		subgraph codeexpr{
 		CodeExpr	[shape=oval, color=darkviolet, label="CodeExpr"];
-		CodeExpr -> Double;
+		CodeExpr -> Literal;
 		CodeExpr -> CodeExpr;
-		CodeExpr -> Integer;
-		CodeExpr -> String;
 		CodeExpr -> AssocArithOper;
 		CodeExpr -> AssocBoolOper;
 		CodeExpr -> UID;
@@ -84,7 +84,7 @@ digraph alltypes {
 		CodeExpr -> OrdBinOp;
 		CodeExpr -> VVVBinOp;
 		CodeExpr -> VVNBinOp;
-		CodeExpr -> DomainDesc;
+		CodeExpr -> DiscreteDomainDesc;
 		CodeExpr -> RealInterval;
 		}
 	}

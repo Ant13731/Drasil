@@ -38,12 +38,6 @@ glass :: NamedChunk
 ptOfExplsn :: NamedChunk
 responseTy :: NamedChunk
 
-module Drasil.GlassBR.ModuleDefs
-allMods :: [Mod]
-implVars :: [QuantityDict]
-interpY :: Func
-interpZ :: Func
-
 module Drasil.GlassBR.References
 rbrtsn2012 :: Citation
 astm2009 :: Citation
@@ -81,16 +75,16 @@ probBr :: ConstrainedChunk
 probFail :: ConstrainedChunk
 pbTolfail :: ConstrainedChunk
 stressDistFac :: ConstrainedChunk
-specParamVals :: [QDefinition]
-dimMax :: QDefinition
-dimMin :: QDefinition
-arMax :: QDefinition
-cWeightMax :: QDefinition
-cWeightMin :: QDefinition
-sdMax :: QDefinition
-stressDistFacMin :: QDefinition
-stressDistFacMax :: QDefinition
-sdMin :: QDefinition
+specParamVals :: [ConstQDef]
+dimMax :: ConstQDef
+dimMin :: ConstQDef
+arMax :: ConstQDef
+cWeightMax :: ConstQDef
+cWeightMin :: ConstQDef
+sdMax :: ConstQDef
+stressDistFacMin :: ConstQDef
+stressDistFacMax :: ConstQDef
+sdMin :: ConstQDef
 symbols :: [UnitaryChunk]
 minThick :: UnitaryChunk
 sflawParamK :: UnitaryChunk
@@ -106,6 +100,7 @@ tmLRe :: UnitalChunk
 nonFactorL :: UnitalChunk
 eqTNTWeight :: UnitalChunk
 unitless :: [QuantityDict]
+interps :: [QuantityDict]
 riskFun :: QuantityDict
 isSafePb :: QuantityDict
 isSafeProb :: QuantityDict
@@ -115,6 +110,8 @@ sdfTol :: QuantityDict
 dimlessLoad :: QuantityDict
 tolLoad :: QuantityDict
 lDurFac :: QuantityDict
+interpY :: QuantityDict
+interpZ :: QuantityDict
 gTF :: DefinedQuantityDict
 loadSF :: DefinedQuantityDict
 lBreak :: Symbol
@@ -153,12 +150,12 @@ safeMessage :: ConceptChunk
 notSafe :: ConceptChunk
 bomb :: ConceptChunk
 explosion :: ConceptChunk
-constants :: [QDefinition]
-constantM :: QDefinition
-constantK :: QDefinition
-constantModElas :: QDefinition
-constantLoadDur :: QDefinition
-constantLoadSF :: QDefinition
+constants :: [ConstQDef]
+constantM :: ConstQDef
+constantK :: ConstQDef
+constantModElas :: ConstQDef
+constantLoadDur :: ConstQDef
+constantLoadSF :: ConstQDef
 sdVectorSent :: Sentence
 sdVector :: [UnitaryChunk]
 termsWithDefsOnly :: [ConceptChunk]
@@ -179,6 +176,12 @@ module Drasil.GlassBR.TMods
 tMods :: [TheoryModel]
 pbIsSafe :: TheoryModel
 lrIsSafe :: TheoryModel
+
+module Drasil.GlassBR.ModuleDefs
+allMods :: [Mod]
+implVars :: [QuantityDict]
+interpY :: Func
+interpZ :: Func
 
 module Drasil.GlassBR.Goals
 goals :: [ConceptInstance]
@@ -203,14 +206,14 @@ assumpGL :: ConceptInstance
 assumpBC :: ConceptInstance
 assumpRT :: ConceptInstance
 assumpLDFC :: ConceptInstance
-assumptionConstants :: [QDefinition]
+assumptionConstants :: [ConstQDef]
 assumptions :: [ConceptInstance]
 
 module Drasil.GlassBR.DataDefs
 aspRat :: DataDefinition
 dataDefs :: [DataDefinition]
 dimLL :: DataDefinition
-qDefns :: [Block QDefinition]
+qDefns :: [Block SimpleQDef]
 glaTyFac :: DataDefinition
 hFromt :: DataDefinition
 loadDF :: DataDefinition
@@ -266,7 +269,7 @@ termsAndDescBullets :: Contents
 termsAndDescBulletsGlTySubSec :: [ItemType]
 termsAndDescBulletsLoadSubSec :: [ItemType]
 solChSpecSubsections :: [CI]
-auxiliaryConstants :: [QDefinition]
+auxiliaryConstants :: [ConstQDef]
 priorityNFReqs :: [ConceptChunk]
 startIntro :: NamedChunk -> Sentence -> CI -> Sentence
 undIR :: [Sentence]

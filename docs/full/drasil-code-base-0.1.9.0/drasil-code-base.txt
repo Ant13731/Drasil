@@ -93,23 +93,12 @@ data UFuncVN
 Norm :: UFuncVN
 Dim :: UFuncVN
 
--- | A one-to-one clone of Expr, with extra OO/code-related functionality.
+-- | Expression language where all terms also denote a term in GOOL (i.e.
+--   translation is total and meaning preserving).
 data CodeExpr
 
--- | Turns a decimal value (<a>Double</a>) into an expression.
-[Dbl] :: Double -> CodeExpr
-
--- | Turns an integer into an expression.
-[Int] :: Integer -> CodeExpr
-
--- | Represents decimal values that are exact as integers.
-[ExactDbl] :: Integer -> CodeExpr
-
--- | Turns a string into an expression.
-[Str] :: String -> CodeExpr
-
--- | Turns two integers into a fraction (or percent).
-[Perc] :: Integer -> Integer -> CodeExpr
+-- | Brings literals into the expression language.
+[Lit] :: Literal -> CodeExpr
 
 -- | Takes an associative arithmetic operator with a list of expressions.
 [AssocA] :: AssocArithOper -> [CodeExpr] -> CodeExpr
@@ -194,9 +183,9 @@ data CodeExpr
 [VVNBinaryOp] :: VVNBinOp -> CodeExpr -> CodeExpr -> CodeExpr
 
 -- | Operators are generalized arithmetic operators over a
---   <a>DomainDesc</a> of an <tt>Expr</tt>. Could be called BigOp. ex:
+--   <a>DomainDesc</a> of an <a>Expr</a>. Could be called BigOp. ex:
 --   Summation is represented via <tt>Add</tt> over a discrete domain.
-[Operator] :: AssocArithOper -> DomainDesc CodeExpr CodeExpr -> CodeExpr -> CodeExpr
+[Operator] :: AssocArithOper -> DiscreteDomainDesc CodeExpr CodeExpr -> CodeExpr -> CodeExpr
 
 -- | The expression is an element of a space. IsIn :: Expr -&gt; Space
 --   -&gt; Expr | A different kind of <tt>IsIn</tt>. A <a>UID</a> is an
@@ -215,6 +204,8 @@ instance GHC.Classes.Eq Language.Drasil.Code.Expr.LABinOp
 instance GHC.Classes.Eq Language.Drasil.Code.Expr.BoolBinOp
 instance GHC.Classes.Eq Language.Drasil.Code.Expr.EqBinOp
 instance GHC.Classes.Eq Language.Drasil.Code.Expr.ArithBinOp
+instance Language.Drasil.Literal.Class.LiteralC Language.Drasil.Code.Expr.CodeExpr
+instance Language.Drasil.Expr.Class.ExprC Language.Drasil.Code.Expr.CodeExpr
 
 module Language.Drasil.Code.Expr.Convert
 
@@ -228,22 +219,26 @@ realInterval :: RealInterval Expr Expr -> RealInterval CodeExpr CodeExpr
 -- | Convert constrained expressions (<tt>ConstraintE</tt>) into
 --   <tt>Constraint''CodeExpr</tt>s.
 constraint :: ConstraintE -> Constraint CodeExpr
+class CanGenCode e
+toCodeExpr :: CanGenCode e => e -> CodeExpr
+instance Language.Drasil.Code.Expr.Convert.CanGenCode Language.Drasil.Literal.Lang.Literal
+instance Language.Drasil.Code.Expr.Convert.CanGenCode Language.Drasil.Expr.Lang.Expr
 
 module Language.Drasil.Code.Expr.Extract
 
 -- | Get dependencies from an equation.
-eDep :: CodeExpr -> [String]
+eDep :: CodeExpr -> [UID]
 
 -- | Get dependencies from an equation, without functions.
-eDep' :: CodeExpr -> [String]
+eDep' :: CodeExpr -> [UID]
 
 -- | Generic traversal of everything that could come from an interval to
 --   names (similar to <a>eNames</a>).
-eNamesRI :: RealInterval CodeExpr CodeExpr -> [String]
+eNamesRI :: RealInterval CodeExpr CodeExpr -> [UID]
 
 -- | Generic traversal of everything that could come from an interval to
 --   names without functions (similar to <a>eNames'</a>).
-eNamesRI' :: RealInterval CodeExpr CodeExpr -> [String]
+eNamesRI' :: RealInterval CodeExpr CodeExpr -> [UID]
 
 
 -- | Defines chunk types for use in code generation.
@@ -317,31 +312,52 @@ varResolve :: ChunkDB -> UID -> CodeVarChunk
 -- | Make a <a>CodeFuncChunk</a> from a <a>UID</a> in the <a>ChunkDB</a>.
 funcResolve :: ChunkDB -> UID -> CodeFuncChunk
 listToArray :: CodeVarChunk -> CodeVarChunk
-instance Language.Drasil.Classes.Core.HasUID Language.Drasil.Chunk.CodeBase.CodeFuncChunk
-instance Language.Drasil.Classes.NamedIdea Language.Drasil.Chunk.CodeBase.CodeFuncChunk
-instance Language.Drasil.Classes.Idea Language.Drasil.Chunk.CodeBase.CodeFuncChunk
-instance Language.Drasil.Classes.HasSpace Language.Drasil.Chunk.CodeBase.CodeFuncChunk
-instance Language.Drasil.Classes.Core.HasSymbol Language.Drasil.Chunk.CodeBase.CodeFuncChunk
+instance Language.Drasil.UID.HasUID Language.Drasil.Chunk.CodeBase.CodeFuncChunk
+instance Language.Drasil.Chunk.NamedIdea.NamedIdea Language.Drasil.Chunk.CodeBase.CodeFuncChunk
+instance Language.Drasil.Chunk.NamedIdea.Idea Language.Drasil.Chunk.CodeBase.CodeFuncChunk
+instance Language.Drasil.Space.HasSpace Language.Drasil.Chunk.CodeBase.CodeFuncChunk
+instance Language.Drasil.Symbol.HasSymbol Language.Drasil.Chunk.CodeBase.CodeFuncChunk
 instance Language.Drasil.Classes.Quantity Language.Drasil.Chunk.CodeBase.CodeFuncChunk
 instance Language.Drasil.Classes.Callable Language.Drasil.Chunk.CodeBase.CodeFuncChunk
 instance GHC.Classes.Eq Language.Drasil.Chunk.CodeBase.CodeFuncChunk
 instance Language.Drasil.Chunk.UnitDefn.MayHaveUnit Language.Drasil.Chunk.CodeBase.CodeFuncChunk
-instance Language.Drasil.Classes.Core.HasUID Language.Drasil.Chunk.CodeBase.CodeVarChunk
-instance Language.Drasil.Classes.NamedIdea Language.Drasil.Chunk.CodeBase.CodeVarChunk
-instance Language.Drasil.Classes.Idea Language.Drasil.Chunk.CodeBase.CodeVarChunk
-instance Language.Drasil.Classes.HasSpace Language.Drasil.Chunk.CodeBase.CodeVarChunk
-instance Language.Drasil.Classes.Core.HasSymbol Language.Drasil.Chunk.CodeBase.CodeVarChunk
+instance Language.Drasil.UID.HasUID Language.Drasil.Chunk.CodeBase.CodeVarChunk
+instance Language.Drasil.Chunk.NamedIdea.NamedIdea Language.Drasil.Chunk.CodeBase.CodeVarChunk
+instance Language.Drasil.Chunk.NamedIdea.Idea Language.Drasil.Chunk.CodeBase.CodeVarChunk
+instance Language.Drasil.Space.HasSpace Language.Drasil.Chunk.CodeBase.CodeVarChunk
+instance Language.Drasil.Symbol.HasSymbol Language.Drasil.Chunk.CodeBase.CodeVarChunk
 instance Language.Drasil.Classes.Quantity Language.Drasil.Chunk.CodeBase.CodeVarChunk
 instance GHC.Classes.Eq Language.Drasil.Chunk.CodeBase.CodeVarChunk
 instance Language.Drasil.Chunk.UnitDefn.MayHaveUnit Language.Drasil.Chunk.CodeBase.CodeVarChunk
-instance Language.Drasil.Classes.Core.HasUID Language.Drasil.Chunk.CodeBase.CodeChunk
-instance Language.Drasil.Classes.NamedIdea Language.Drasil.Chunk.CodeBase.CodeChunk
-instance Language.Drasil.Classes.Idea Language.Drasil.Chunk.CodeBase.CodeChunk
-instance Language.Drasil.Classes.HasSpace Language.Drasil.Chunk.CodeBase.CodeChunk
-instance Language.Drasil.Classes.Core.HasSymbol Language.Drasil.Chunk.CodeBase.CodeChunk
+instance Language.Drasil.UID.HasUID Language.Drasil.Chunk.CodeBase.CodeChunk
+instance Language.Drasil.Chunk.NamedIdea.NamedIdea Language.Drasil.Chunk.CodeBase.CodeChunk
+instance Language.Drasil.Chunk.NamedIdea.Idea Language.Drasil.Chunk.CodeBase.CodeChunk
+instance Language.Drasil.Space.HasSpace Language.Drasil.Chunk.CodeBase.CodeChunk
+instance Language.Drasil.Symbol.HasSymbol Language.Drasil.Chunk.CodeBase.CodeChunk
 instance Language.Drasil.Classes.Quantity Language.Drasil.Chunk.CodeBase.CodeChunk
 instance GHC.Classes.Eq Language.Drasil.Chunk.CodeBase.CodeChunk
 instance Language.Drasil.Chunk.UnitDefn.MayHaveUnit Language.Drasil.Chunk.CodeBase.CodeChunk
+
+module Language.Drasil.Code.Expr.Class
+class CodeExprC r
+
+-- | Constructs a CodeExpr for actor creation (constructor call)
+new :: (CodeExprC r, Callable f, HasUID f, CodeIdea f) => f -> [r] -> r
+
+-- | Constructs a CodeExpr for actor creation (constructor call) that uses
+--   named arguments
+newWithNamedArgs :: (CodeExprC r, Callable f, HasUID f, CodeIdea f, HasUID a, IsArgumentName a) => f -> [r] -> [(a, r)] -> r
+
+-- | Constructs a CodeExpr for actor messaging (method call)
+message :: (CodeExprC r, Callable f, HasUID f, CodeIdea f, HasUID c, HasSpace c, CodeIdea c) => c -> f -> [r] -> r
+
+-- | Constructs a CodeExpr for actor messaging (method call) that uses
+--   named arguments
+msgWithNamedArgs :: (CodeExprC r, Callable f, HasUID f, CodeIdea f, HasUID c, HasSpace c, CodeIdea c, HasUID a, IsArgumentName a) => c -> f -> [r] -> [(a, r)] -> r
+
+-- | Constructs a CodeExpr representing the field of an actor
+field :: CodeExprC r => CodeVarChunk -> CodeVarChunk -> r
+instance Language.Drasil.Code.Expr.Class.CodeExprC Language.Drasil.Code.Expr.CodeExpr
 
 module Language.Drasil.Code.Expr.Precedence
 
@@ -360,23 +376,12 @@ eprec :: CodeExpr -> Int
 -- | Re-exporting modules
 module Language.Drasil.Code.Expr.Development
 
--- | A one-to-one clone of Expr, with extra OO/code-related functionality.
+-- | Expression language where all terms also denote a term in GOOL (i.e.
+--   translation is total and meaning preserving).
 data CodeExpr
 
--- | Turns a decimal value (<a>Double</a>) into an expression.
-[Dbl] :: Double -> CodeExpr
-
--- | Turns an integer into an expression.
-[Int] :: Integer -> CodeExpr
-
--- | Represents decimal values that are exact as integers.
-[ExactDbl] :: Integer -> CodeExpr
-
--- | Turns a string into an expression.
-[Str] :: String -> CodeExpr
-
--- | Turns two integers into a fraction (or percent).
-[Perc] :: Integer -> Integer -> CodeExpr
+-- | Brings literals into the expression language.
+[Lit] :: Literal -> CodeExpr
 
 -- | Takes an associative arithmetic operator with a list of expressions.
 [AssocA] :: AssocArithOper -> [CodeExpr] -> CodeExpr
@@ -461,9 +466,9 @@ data CodeExpr
 [VVNBinaryOp] :: VVNBinOp -> CodeExpr -> CodeExpr -> CodeExpr
 
 -- | Operators are generalized arithmetic operators over a
---   <a>DomainDesc</a> of an <tt>Expr</tt>. Could be called BigOp. ex:
+--   <a>DomainDesc</a> of an <a>Expr</a>. Could be called BigOp. ex:
 --   Summation is represented via <tt>Add</tt> over a discrete domain.
-[Operator] :: AssocArithOper -> DomainDesc CodeExpr CodeExpr -> CodeExpr -> CodeExpr
+[Operator] :: AssocArithOper -> DiscreteDomainDesc CodeExpr CodeExpr -> CodeExpr -> CodeExpr
 
 -- | The expression is an element of a space. IsIn :: Expr -&gt; Space
 --   -&gt; Expr | A different kind of <tt>IsIn</tt>. A <a>UID</a> is an
@@ -553,18 +558,18 @@ Norm :: UFuncVN
 Dim :: UFuncVN
 
 -- | Get dependencies from an equation.
-eDep :: CodeExpr -> [String]
+eDep :: CodeExpr -> [UID]
 
 -- | Get dependencies from an equation, without functions.
-eDep' :: CodeExpr -> [String]
+eDep' :: CodeExpr -> [UID]
 
 -- | Generic traversal of everything that could come from an interval to
 --   names (similar to <a>eNames</a>).
-eNamesRI :: RealInterval CodeExpr CodeExpr -> [String]
+eNamesRI :: RealInterval CodeExpr CodeExpr -> [UID]
 
 -- | Generic traversal of everything that could come from an interval to
 --   names without functions (similar to <a>eNames'</a>).
-eNamesRI' :: RealInterval CodeExpr CodeExpr -> [String]
+eNamesRI' :: RealInterval CodeExpr CodeExpr -> [UID]
 
 -- | eprec - <a>Expression</a> precedence.
 eprec :: CodeExpr -> Int
@@ -589,176 +594,202 @@ realInterval :: RealInterval Expr Expr -> RealInterval CodeExpr CodeExpr
 constraint :: ConstraintE -> Constraint CodeExpr
 
 
--- | Defines constructors for <a>CodeExpr</a>s often used in relation to
---   code generation.
+-- | Re-export CodeExpr constructors.
 module Language.Drasil.CodeExpr
 
--- | A one-to-one clone of Expr, with extra OO/code-related functionality.
+-- | Expression language where all terms also denote a term in GOOL (i.e.
+--   translation is total and meaning preserving).
 data CodeExpr
-
--- | Smart constructor for chunk symbols.
-sy :: (HasUID u, HasSymbol u) => u -> CodeExpr
-
--- | Smart constructor for strings.
-str :: String -> CodeExpr
-
--- | Smart constructor for integers.
-int :: Integer -> CodeExpr
-
--- | Smart constructor for doubles.
-dbl :: Double -> CodeExpr
-
--- | Smart constructor for exact doubles.
-exactDbl :: Integer -> CodeExpr
-
--- | Smart constructor for matrices.
-matrix :: [[CodeExpr]] -> CodeExpr
-
--- | Smart constructor for fractions.
-frac :: Integer -> Integer -> CodeExpr
-
--- | Smart constructor for rational expressions (only in 1/x form).
-recip_ :: CodeExpr -> CodeExpr
-
--- | Smart constructor for taking the absolute value of an expression.
-abs_ :: CodeExpr -> CodeExpr
-
--- | Smart constructor for negating an expression.
-neg :: CodeExpr -> CodeExpr
-
--- | Smart constructor to take the log of an expression.
-log :: CodeExpr -> CodeExpr
-
--- | Smart constructor to take the ln of an expression.
-ln :: CodeExpr -> CodeExpr
-
--- | Smart constructor to take the square root of an expression.
-sqrt :: CodeExpr -> CodeExpr
-
--- | Smart constructor to apply sin to an expression.
-sin :: CodeExpr -> CodeExpr
-
--- | Smart constructor to apply cos to an expression.
-cos :: CodeExpr -> CodeExpr
-
--- | Smart constructor to apply tan to an expression.
-tan :: CodeExpr -> CodeExpr
-
--- | Smart constructor to apply sec to an expression.
-sec :: CodeExpr -> CodeExpr
-
--- | Smart constructor to apply csc to an expression.
-csc :: CodeExpr -> CodeExpr
-
--- | Smart constructor to apply cot to an expression.
-cot :: CodeExpr -> CodeExpr
-
--- | Smart constructor to apply arcsin to an expression.
-arcsin :: CodeExpr -> CodeExpr
-
--- | Smart constructor to apply arccos to an expression.
-arccos :: CodeExpr -> CodeExpr
-
--- | Smart constructor to apply arctan to an expression.
-arctan :: CodeExpr -> CodeExpr
-
--- | Smart constructor for the exponential (base e) function.
-exp :: CodeExpr -> CodeExpr
-
--- | Smart constructor for calculating the dimension of a vector.
-dim :: CodeExpr -> CodeExpr
-
--- | Smart constructor for calculating the normal form of a vector.
-norm :: CodeExpr -> CodeExpr
-
--- | Smart constructor for applying logical negation to an expression.
-not_ :: CodeExpr -> CodeExpr
-
--- | Smart constructor for the boolean <i>and</i> operator.
-($&&) :: CodeExpr -> CodeExpr -> CodeExpr
-
--- | Smart constructor for subtracting two expressions.
-($-) :: CodeExpr -> CodeExpr -> CodeExpr
-
--- | Smart constructor for dividing two expressions.
-($/) :: CodeExpr -> CodeExpr -> CodeExpr
-
--- | Smart constructor for rasing the first expression to the power of the
---   second.
-($^) :: CodeExpr -> CodeExpr -> CodeExpr
-
--- | Smart constructor to show that one expression implies the other
---   (conditional operator).
-($=>) :: CodeExpr -> CodeExpr -> CodeExpr
-
--- | Smart constructor to show that an expression exists if and only if
---   another expression exists (biconditional operator).
-($<=>) :: CodeExpr -> CodeExpr -> CodeExpr
-
--- | Smart constructor for equating two expressions.
-($=) :: CodeExpr -> CodeExpr -> CodeExpr
-
--- | Smart constructor for showing that two expressions are not equal.
-($!=) :: CodeExpr -> CodeExpr -> CodeExpr
-
--- | Less than.
-($<) :: CodeExpr -> CodeExpr -> CodeExpr
-
--- | Greater than.
-($>) :: CodeExpr -> CodeExpr -> CodeExpr
-
--- | Less than or equal to.
-($<=) :: CodeExpr -> CodeExpr -> CodeExpr
-
--- | Greater than or equal to.
-($>=) :: CodeExpr -> CodeExpr -> CodeExpr
-
--- | Add two expressions (Integers).
-addI :: CodeExpr -> CodeExpr -> CodeExpr
-
--- | Add two expressions (Real numbers).
-addRe :: CodeExpr -> CodeExpr -> CodeExpr
-
--- | Multiply two expressions (Integers).
-mulI :: CodeExpr -> CodeExpr -> CodeExpr
-
--- | Multiply two expressions (Real numbers).
-mulRe :: CodeExpr -> CodeExpr -> CodeExpr
-
--- | Smart constructor for indexing.
-idx :: CodeExpr -> CodeExpr -> CodeExpr
+class CodeExprC r
 
 -- | Constructs a CodeExpr for actor creation (constructor call)
-new :: (Callable f, HasUID f, CodeIdea f) => f -> [CodeExpr] -> CodeExpr
+new :: (CodeExprC r, Callable f, HasUID f, CodeIdea f) => f -> [r] -> r
 
 -- | Constructs a CodeExpr for actor creation (constructor call) that uses
 --   named arguments
-newWithNamedArgs :: (Callable f, HasUID f, CodeIdea f, HasUID a, IsArgumentName a) => f -> [CodeExpr] -> [(a, CodeExpr)] -> CodeExpr
+newWithNamedArgs :: (CodeExprC r, Callable f, HasUID f, CodeIdea f, HasUID a, IsArgumentName a) => f -> [r] -> [(a, r)] -> r
 
 -- | Constructs a CodeExpr for actor messaging (method call)
-message :: (Callable f, HasUID f, CodeIdea f, HasUID c, HasSpace c, CodeIdea c) => c -> f -> [CodeExpr] -> CodeExpr
+message :: (CodeExprC r, Callable f, HasUID f, CodeIdea f, HasUID c, HasSpace c, CodeIdea c) => c -> f -> [r] -> r
 
 -- | Constructs a CodeExpr for actor messaging (method call) that uses
 --   named arguments
-msgWithNamedArgs :: (Callable f, HasUID f, CodeIdea f, HasUID c, HasSpace c, CodeIdea c, HasUID a, IsArgumentName a) => c -> f -> [CodeExpr] -> [(a, CodeExpr)] -> CodeExpr
+msgWithNamedArgs :: (CodeExprC r, Callable f, HasUID f, CodeIdea f, HasUID c, HasSpace c, CodeIdea c, HasUID a, IsArgumentName a) => c -> f -> [r] -> [(a, r)] -> r
 
 -- | Constructs a CodeExpr representing the field of an actor
-field :: CodeVarChunk -> CodeVarChunk -> CodeExpr
+field :: CodeExprC r => CodeVarChunk -> CodeVarChunk -> r
+class ExprC r
+lit :: ExprC r => Literal -> r
+($=) :: ExprC r => r -> r -> r
+($!=) :: ExprC r => r -> r -> r
+
+-- | Smart constructor for ordering two equations.
+($<) :: ExprC r => r -> r -> r
+
+-- | Smart constructor for ordering two equations.
+($>) :: ExprC r => r -> r -> r
+
+-- | Smart constructor for ordering two equations.
+($<=) :: ExprC r => r -> r -> r
+
+-- | Smart constructor for ordering two equations.
+($>=) :: ExprC r => r -> r -> r
+
+-- | Smart constructor for the dot product of two equations.
+($.) :: ExprC r => r -> r -> r
+
+-- | Add two expressions (Integers).
+addI :: ExprC r => r -> r -> r
+
+-- | Add two expressions (Real numbers).
+addRe :: ExprC r => r -> r -> r
+
+-- | Multiply two expressions (Integers).
+mulI :: ExprC r => r -> r -> r
+
+-- | Multiply two expressions (Real numbers).
+mulRe :: ExprC r => r -> r -> r
+($-) :: ExprC r => r -> r -> r
+($/) :: ExprC r => r -> r -> r
+($^) :: ExprC r => r -> r -> r
+($=>) :: ExprC r => r -> r -> r
+($<=>) :: ExprC r => r -> r -> r
+($&&) :: ExprC r => r -> r -> r
+($||) :: ExprC r => r -> r -> r
+
+-- | Smart constructor for taking the absolute value of an expression.
+abs_ :: ExprC r => r -> r
+
+-- | Smart constructor for negating an expression.
+neg :: ExprC r => r -> r
+
+-- | Smart constructor to take the log of an expression.
+log :: ExprC r => r -> r
+
+-- | Smart constructor to take the ln of an expression.
+ln :: ExprC r => r -> r
+
+-- | Smart constructor to take the square root of an expression.
+sqrt :: ExprC r => r -> r
+
+-- | Smart constructor to apply sin to an expression.
+sin :: ExprC r => r -> r
+
+-- | Smart constructor to apply cos to an expression.
+cos :: ExprC r => r -> r
+
+-- | Smart constructor to apply tan to an expression.
+tan :: ExprC r => r -> r
+
+-- | Smart constructor to apply sec to an expression.
+sec :: ExprC r => r -> r
+
+-- | Smart constructor to apply csc to an expression.
+csc :: ExprC r => r -> r
+
+-- | Smart constructor to apply cot to an expression.
+cot :: ExprC r => r -> r
+
+-- | Smart constructor to apply arcsin to an expression.
+arcsin :: ExprC r => r -> r
+
+-- | Smart constructor to apply arccos to an expression.
+arccos :: ExprC r => r -> r
+
+-- | Smart constructor to apply arctan to an expression.
+arctan :: ExprC r => r -> r
+
+-- | Smart constructor for the exponential (base e) function.
+exp :: ExprC r => r -> r
+
+-- | Smart constructor for calculating the dimension of a vector.
+dim :: ExprC r => r -> r
+
+-- | Smart constructor for calculating the normal form of a vector.
+norm :: ExprC r => r -> r
+
+-- | Smart constructor for negating vectors.
+negVec :: ExprC r => r -> r
+
+-- | Smart constructor for applying logical negation to an expression.
+not_ :: ExprC r => r -> r
+
+-- | Smart constructor for indexing.
+idx :: ExprC r => r -> r -> r
+
+-- | Smart constructor for the summation, product, and integral functions
+--   over an interval.
+defint :: ExprC r => Symbol -> r -> r -> r -> r
+
+-- | Smart constructor for the summation, product, and integral functions
+--   over an interval.
+defsum :: ExprC r => Symbol -> r -> r -> r -> r
+
+-- | Smart constructor for the summation, product, and integral functions
+--   over an interval.
+defprod :: ExprC r => Symbol -> r -> r -> r -> r
+
+-- | Smart constructor for 'real interval' membership.
+realInterval :: (ExprC r, HasUID c) => c -> RealInterval r r -> r
+
+-- | Euclidean function : takes a vector and returns the sqrt of the
+--   sum-of-squares.
+euclidean :: ExprC r => [r] -> r
+
+-- | Smart constructor to cross product two expressions.
+cross :: ExprC r => r -> r -> r
+
+-- | Smart constructor for case statements with a complete set of cases.
+completeCase :: ExprC r => [(r, r)] -> r
+
+-- | Smart constructor for case statements with an incomplete set of cases.
+incompleteCase :: ExprC r => [(r, r)] -> r
+
+-- | Create a matrix. TODO: Re-work later.
+matrix :: ExprC r => [[r]] -> r
+
+-- | Create a two-by-two matrix from four given values. For example:
+--   
+--   <pre>
+--   &gt;&gt;&gt; m2x2 1 2 3 4
+--   [ [1,2],
+--     [3,4] ]
+--   </pre>
+m2x2 :: ExprC r => r -> r -> r -> r -> r
+
+-- | Create a 2D vector (a matrix with two rows, one column). First
+--   argument is placed above the second.
+vec2D :: ExprC r => r -> r -> r
+
+-- | Creates a diagonal two-by-two matrix. For example:
+--   
+--   <pre>
+--   &gt;&gt;&gt; dgnl2x2 1 2
+--   [ [1, 0],
+--     [0, 2] ]
+--   </pre>
+dgnl2x2 :: ExprC r => r -> r -> r
 
 -- | Applies a given function with a list of parameters.
-apply :: (HasUID f, HasSymbol f) => f -> [CodeExpr] -> CodeExpr
-
--- | Similar to <a>apply</a>, but converts second argument into
---   <tt>Symbol</tt>s.
-apply1 :: (HasUID f, HasSymbol f, HasUID a, HasSymbol a) => f -> a -> CodeExpr
-
--- | Similar to <a>apply</a>, but the applied function takes two parameters
---   (which are both <tt>Symbol</tt>s).
-apply2 :: (HasUID f, HasSymbol f, HasUID a, HasSymbol a, HasUID b, HasSymbol b) => f -> a -> b -> CodeExpr
+apply :: (ExprC r, HasUID f, HasSymbol f) => f -> [r] -> r
 
 -- | Similar to <a>apply</a>, but takes a relation to apply to
 --   <a>FCall</a>.
-applyWithNamedArgs :: (HasUID f, HasSymbol f, HasUID a, IsArgumentName a) => f -> [CodeExpr] -> [(a, CodeExpr)] -> CodeExpr
+applyWithNamedArgs :: (ExprC r, HasUID f, HasSymbol f, HasUID a, IsArgumentName a) => f -> [r] -> [(a, r)] -> r
+
+-- | Create an <a>Expr</a> from a <a>Symbol</a>ic Chunk.
+sy :: (ExprC r, HasUID c, HasSymbol c) => c -> r
+infixr 4 $=
+infixl 7 $/
+infixr 8 $^
+infixr 9 $&&
+infixr 9 $||
+class LiteralC r
+int :: LiteralC r => Integer -> r
+str :: LiteralC r => String -> r
+dbl :: LiteralC r => Double -> r
+exactDbl :: LiteralC r => Integer -> r
+perc :: LiteralC r => Integer -> Integer -> r
 
 -- | Render an algebraic expression into our code expression language.
 expr :: Expr -> CodeExpr

@@ -5,8 +5,8 @@
 </span><span id="line-5"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Theory.Drasil</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">TheoryModel</span></span><span class="hs-special">)</span><span>
 </span><span id="line-6"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Drasil.SRSDocument</span></span><span>
 </span><span id="line-7"></span><span class="hs-keyword">import</span><span> </span><span class="hs-keyword">qualified</span><span> </span><span class="annot"><span class="hs-identifier">Drasil.DocLang.SRS</span></span><span> </span><span class="hs-keyword">as</span><span> </span><span class="annot"><span class="hs-identifier">SRS</span></span><span>
-</span><span id="line-8"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Utils.Drasil.Concepts</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">the</span></span><span class="hs-special">)</span><span>
-</span><span id="line-9"></span><span class="hs-keyword">import</span><span> </span><span class="hs-keyword">qualified</span><span> </span><span class="annot"><span class="hs-identifier">Utils.Drasil.Sentence</span></span><span> </span><span class="hs-keyword">as</span><span> </span><span class="annot"><span class="hs-identifier">S</span></span><span>
+</span><span id="line-8"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Language.Drasil.Chunk.Concept.NamedCombinators</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">the</span></span><span class="hs-special">)</span><span>
+</span><span id="line-9"></span><span class="hs-keyword">import</span><span> </span><span class="hs-keyword">qualified</span><span> </span><span class="annot"><span class="hs-identifier">Language.Drasil.Sentence.Combinators</span></span><span> </span><span class="hs-keyword">as</span><span> </span><span class="annot"><span class="hs-identifier">S</span></span><span>
 </span><span id="line-10"></span><span>
 </span><span id="line-11"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Data.Drasil.People</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">olu</span></span><span class="hs-special">)</span><span>
 </span><span id="line-12"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Data.Drasil.SI_Units</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">metre</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">second</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">newton</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">kilogram</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">degree</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">radian</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">hertz</span></span><span class="hs-special">)</span><span>
@@ -260,7 +260,7 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-identifier hs-var">AuxConstntSec</span></span><span> </span><span class="annot"><span class="annottext">(AuxConstntSec -&gt; DocSection) -&gt; AuxConstntSec -&gt; DocSection
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span>
-</span><span id="line-97"></span><span>     </span><span class="annot"><span class="annottext">CI -&gt; [QDefinition] -&gt; AuxConstntSec
+</span><span id="line-97"></span><span>     </span><span class="annot"><span class="annottext">CI -&gt; [ConstQDef] -&gt; AuxConstntSec
 </span><span class="hs-identifier hs-var">AuxConsProg</span></span><span> </span><span class="annot"><span class="annottext">CI
 </span><a href="Drasil.SglPendulum.Body.html#progName"><span class="hs-identifier hs-var">progName</span></a></span><span> </span><span class="hs-special">[</span><span class="hs-special">]</span><span class="hs-special">,</span><span>  </span><span class="hs-comment">--Adds Auxilliary constraint section</span><span>
 </span><span id="line-98"></span><span>  </span><span class="annot"><span class="annottext">DocSection
@@ -269,8 +269,8 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span id="line-100"></span><span>
 </span><span id="line-101"></span><span class="annot"><a href="Drasil.SglPendulum.Body.html#progName"><span class="hs-identifier hs-type">progName</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">CI</span></span><span>
 </span><span id="line-102"></span><span id="progName"><span class="annot"><span class="annottext">progName :: CI
-</span><a href="Drasil.SglPendulum.Body.html#progName"><span class="hs-identifier hs-var hs-var">progName</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">UID -&gt; NP -&gt; UID -&gt; [IdeaDict] -&gt; CI
-</span><span class="hs-identifier hs-var">commonIdeaWithDict</span></span><span> </span><span class="annot"><span class="hs-string">&quot;pendulumTitle&quot;</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">UID -&gt; NP
+</span><a href="Drasil.SglPendulum.Body.html#progName"><span class="hs-identifier hs-var hs-var">progName</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String -&gt; NP -&gt; String -&gt; [IdeaDict] -&gt; CI
+</span><span class="hs-identifier hs-var">commonIdeaWithDict</span></span><span> </span><span class="annot"><span class="hs-string">&quot;pendulumTitle&quot;</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">String -&gt; NP
 </span><span class="hs-identifier hs-var">pn</span></span><span> </span><span class="annot"><span class="hs-string">&quot;Pendulum&quot;</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="hs-string">&quot;SglPendulum&quot;</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">IdeaDict
 </span><span class="hs-identifier hs-var">physics</span></span><span class="hs-special">]</span><span>
 </span><span id="line-103"></span><span>
@@ -289,12 +289,12 @@ a
 -&gt; [f]
 -&gt; [InstanceModel]
 -&gt; [DataDefinition]
--&gt; [UID]
+-&gt; [String]
 -&gt; [h]
 -&gt; [i]
--&gt; [Block QDefinition]
+-&gt; [Block SimpleQDef]
 -&gt; [j]
--&gt; [QDefinition]
+-&gt; [ConstQDef]
 -&gt; ChunkDB
 -&gt; ChunkDB
 -&gt; ReferenceDB
@@ -325,7 +325,7 @@ a
 </span><span id="line-113"></span><span>  </span><span class="annot"><span class="annottext">_datadefs :: [DataDefinition]
 </span><span class="hs-identifier hs-var">_datadefs</span></span><span>    </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">[DataDefinition]
 </span><a href="Drasil.SglPendulum.DataDefs.html#dataDefs"><span class="hs-identifier hs-var">dataDefs</span></a></span><span class="hs-special">,</span><span>
-</span><span id="line-114"></span><span>  </span><span class="annot"><span class="annottext">_configFiles :: [UID]
+</span><span id="line-114"></span><span>  </span><span class="annot"><span class="annottext">_configFiles :: [String]
 </span><span class="hs-identifier hs-var">_configFiles</span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">[</span><span class="hs-special">]</span><span class="hs-special">,</span><span>
 </span><span id="line-115"></span><span>  </span><span class="annot"><span class="annottext">_inputs :: [QuantityDict]
 </span><span class="hs-identifier hs-var">_inputs</span></span><span>      </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">[QuantityDict]
@@ -333,13 +333,13 @@ a
 </span><span id="line-116"></span><span>  </span><span class="annot"><span class="annottext">_outputs :: [QuantityDict]
 </span><span class="hs-identifier hs-var">_outputs</span></span><span>     </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">[QuantityDict]
 </span><a href="Drasil.SglPendulum.Unitals.html#outputs"><span class="hs-identifier hs-var">outputs</span></a></span><span class="hs-special">,</span><span>
-</span><span id="line-117"></span><span>  </span><span class="annot"><span class="annottext">_defSequence :: [Block QDefinition]
-</span><span class="hs-identifier hs-var">_defSequence</span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">[</span><span class="hs-special">]</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-special">[</span><span class="annot"><span class="hs-identifier hs-type">Block</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">QDefinition</span></span><span class="hs-special">]</span><span class="hs-special">,</span><span>
+</span><span id="line-117"></span><span>  </span><span class="annot"><span class="annottext">_defSequence :: [Block SimpleQDef]
+</span><span class="hs-identifier hs-var">_defSequence</span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">[</span><span class="hs-special">]</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-special">[</span><span class="annot"><span class="hs-identifier hs-type">Block</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">SimpleQDef</span></span><span class="hs-special">]</span><span class="hs-special">,</span><span>
 </span><span id="line-118"></span><span>  </span><span class="annot"><span class="annottext">_constraints :: [UncertQ]
 </span><span class="hs-identifier hs-var">_constraints</span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">[UncertQ]
 </span><a href="Drasil.SglPendulum.Unitals.html#inConstraints"><span class="hs-identifier hs-var">inConstraints</span></a></span><span class="hs-special">,</span><span>
-</span><span id="line-119"></span><span>  </span><span class="annot"><span class="annottext">_constants :: [QDefinition]
-</span><span class="hs-identifier hs-var">_constants</span></span><span>   </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">[</span><span class="hs-special">]</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-special">[</span><span class="annot"><span class="hs-identifier hs-type">QDefinition</span></span><span class="hs-special">]</span><span class="hs-special">,</span><span>
+</span><span id="line-119"></span><span>  </span><span class="annot"><span class="annottext">_constants :: [ConstQDef]
+</span><span class="hs-identifier hs-var">_constants</span></span><span>   </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">[</span><span class="hs-special">]</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-special">[</span><span class="annot"><span class="hs-identifier hs-type">ConstQDef</span></span><span class="hs-special">]</span><span class="hs-special">,</span><span>
 </span><span id="line-120"></span><span>  </span><span class="annot"><span class="annottext">_sysinfodb :: ChunkDB
 </span><span class="hs-identifier hs-var">_sysinfodb</span></span><span>   </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ChunkDB
 </span><a href="Drasil.SglPendulum.Body.html#symbMap"><span class="hs-identifier hs-var">symbMap</span></a></span><span class="hs-special">,</span><span>

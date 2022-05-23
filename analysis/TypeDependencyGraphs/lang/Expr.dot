@@ -1,15 +1,12 @@
 digraph expr{
 Expr	[shape=oval, color=darkviolet, label="Expr"];
-Expr -> Double;
+Expr -> Literal;
 Expr -> Expr;
-Expr -> Integer;
-Expr -> String;
 Expr -> AssocArithOper;
 Expr -> AssocBoolOper;
-Expr -> DerivType;
 Expr -> UID;
 Expr -> Completeness;
-Expr -> ExprRelation;
+Expr -> Relation;
 Expr -> UFunc;
 Expr -> UFuncB;
 Expr -> UFuncVV;
@@ -21,6 +18,6 @@ Expr -> LABinOp;
 Expr -> OrdBinOp;
 Expr -> VVVBinOp;
 Expr -> VVNBinOp;
-Expr -> DomainDesc;
+Expr -> DiscreteDomainDesc;
 Expr -> RealInterval;
 }

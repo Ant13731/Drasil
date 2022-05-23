@@ -1,12 +1,11 @@
 digraph modelexpr{
 ModelExpr	[shape=oval, color=darkviolet, label="ModelExpr"];
-ModelExpr -> Double;
+ModelExpr -> Literal;
 ModelExpr -> ModelExpr;
-ModelExpr -> Integer;
-ModelExpr -> String;
 ModelExpr -> Space;
 ModelExpr -> AssocArithOper;
 ModelExpr -> AssocBoolOper;
+ModelExpr -> Integer;
 ModelExpr -> DerivType;
 ModelExpr -> UID;
 ModelExpr -> Completeness;
@@ -24,5 +23,6 @@ ModelExpr -> StatBinOp;
 ModelExpr -> VVVBinOp;
 ModelExpr -> VVNBinOp;
 ModelExpr -> DomainDesc;
+ModelExpr -> t;
 ModelExpr -> RealInterval;
 }

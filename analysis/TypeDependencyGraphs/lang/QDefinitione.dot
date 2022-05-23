@@ -1,0 +1,8 @@
+digraph qdefinitione{
+QDefinitione	[shape=oval, color=darkviolet, label="QDefinitione"];
+QDefinitione -> DefinedQuantityDict;
+QDefinitione -> UID;
+QDefinitione -> e;
+QDefinitione -> QDefinition;
+QDefinitione -> Lens_;
+}

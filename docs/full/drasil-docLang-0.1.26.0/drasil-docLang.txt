@@ -546,33 +546,6 @@ ApndxSec :: ApndxSec -> NbSection
 mkNBDesc :: SystemInformation -> NBDecl -> NBDesc
 
 
--- | Currently unused. Defines functions to create a database for holding
---   definitions and models.
-module Drasil.DocumentLanguage.RefHelpers
-
--- | A database that contains <a>TheoryModel</a>s, <a>GenDefn</a>s,
---   <a>DataDefinition</a>s, and <a>InstanceModel</a>s.
-data ModelDB
-
--- | Theory Model reference map.
-tmRefDB :: ModelDB -> RefMap TheoryModel
-
--- | General Definition reference map.
-gdRefDB :: ModelDB -> RefMap GenDefn
-
--- | Data Definition reference map.
-ddRefDB :: ModelDB -> RefMap DataDefinition
-
--- | Instance Model reference map.
-imRefDB :: ModelDB -> RefMap InstanceModel
-
--- | Constructor for creating a <a>ModelDB</a>.
-mdb :: [TheoryModel] -> [GenDefn] -> [DataDefinition] -> [InstanceModel] -> ModelDB
-
--- | Get all the models out of a database.
-modelsFromDB :: RefMap a -> [a]
-
-
 -- | Helpers for dealing with formatting of Units
 module Drasil.DocumentLanguage.Units
 
@@ -702,7 +675,7 @@ tableShows :: (Referable a, HasShortName a) => a -> Sentence -> Sentence
 
 -- | Helper that makes sure the rows and columns of a traceability matrix
 --   have substance.
-ensureItems :: UID -> [a] -> [a]
+ensureItems :: String -> [a] -> [a]
 
 -- | Helper that finds the layout <a>UID</a>s of a traceability matrix.
 layoutUIDs :: [TraceViewCat] -> ChunkDB -> [UID] -> [UID]
@@ -1003,7 +976,7 @@ OffShelfSolnsProg :: [Contents] -> OffShelfSolnsSec
 
 -- | Values of Auxiliary Constants section.
 data AuxConstntSec
-AuxConsProg :: CI -> [QDefinition] -> AuxConstntSec
+AuxConsProg :: CI -> [ConstQDef] -> AuxConstntSec
 
 -- | Appendix section.
 newtype AppndxSec
@@ -1081,10 +1054,10 @@ module Drasil.Sections.AuxiliaryConstants
 
 -- | Gets the auxiliary constant values given an introductory <a>Idea</a>
 --   and a <a>QDefinition</a>.
-valsOfAuxConstantsF :: Idea a => a -> [QDefinition] -> Section
+valsOfAuxConstantsF :: Idea a => a -> [ConstQDef] -> Section
 
 -- | Helper that gets a table of constants from a <a>QDefinition</a>.
-tableOfConstants :: [QDefinition] -> LabelledContent
+tableOfConstants :: [ConstQDef] -> LabelledContent
 
 -- | Table of constants reference label.
 tableOfConstantsRef :: Reference
@@ -1584,35 +1557,35 @@ traceMatOtherReq :: SystemInformation -> TraceConfig
 traceMatStandard :: SystemInformation -> [TraceConfig]
 
 -- | Traceabiliy viewing assumptions. Takes a <a>UID</a> and a
---   <tt>ChunkDB</tt>. Returns a list of <a>UID</a>s.
+--   <a>ChunkDB</a>. Returns a list of <a>UID</a>s.
 tvAssumps :: TraceViewCat
 
 -- | Traceabiliy viewing data definitions. Takes a <a>UID</a> and a
---   <tt>ChunkDB</tt>. Returns a list of <a>UID</a>s.
+--   <a>ChunkDB</a>. Returns a list of <a>UID</a>s.
 tvDataDefns :: TraceViewCat
 
 -- | Traceabiliy viewing general definitions. Takes a <a>UID</a> and a
---   <tt>ChunkDB</tt>. Returns a list of <a>UID</a>s.
+--   <a>ChunkDB</a>. Returns a list of <a>UID</a>s.
 tvGenDefns :: TraceViewCat
 
 -- | Traceabiliy viewing theory models. Takes a <a>UID</a> and a
---   <tt>ChunkDB</tt>. Returns a list of <a>UID</a>s.
+--   <a>ChunkDB</a>. Returns a list of <a>UID</a>s.
 tvTheoryModels :: TraceViewCat
 
 -- | Traceabiliy viewing instance models. Takes a <a>UID</a> and a
---   <tt>ChunkDB</tt>. Returns a list of <a>UID</a>s.
+--   <a>ChunkDB</a>. Returns a list of <a>UID</a>s.
 tvInsModels :: TraceViewCat
 
--- | Traceabiliy viewing goals. Takes a <a>UID</a> and a <tt>ChunkDB</tt>.
+-- | Traceabiliy viewing goals. Takes a <a>UID</a> and a <a>ChunkDB</a>.
 --   Returns a list of <a>UID</a>s.
 tvGoals :: TraceViewCat
 
 -- | Traceabiliy viewing requirements. Takes a <a>UID</a> and a
---   <tt>ChunkDB</tt>. Returns a list of <a>UID</a>s.
+--   <a>ChunkDB</a>. Returns a list of <a>UID</a>s.
 tvReqs :: TraceViewCat
 
--- | Traceabiliy viewing changes. Takes a <a>UID</a> and a
---   <tt>ChunkDB</tt>. Returns a list of <a>UID</a>s.
+-- | Traceabiliy viewing changes. Takes a <a>UID</a> and a <a>ChunkDB</a>.
+--   Returns a list of <a>UID</a>s.
 tvChanges :: TraceViewCat
 
 
@@ -1648,7 +1621,7 @@ mkGraphEdges :: [TraceViewCat] -> [TraceViewCat] -> SystemInformation -> [(UID, 
 -- | Helper for making graph edges. Taken from Utils.Drasil's traceability
 --   matrix relation finder. But, instead of marking <a>X</a> on two
 --   related ideas, it makes them an edge.
-makeTGraph :: [String] -> [[String]] -> [String] -> [(String, [String])]
+makeTGraph :: [UID] -> [[UID]] -> [UID] -> [(UID, [UID])]
 
 -- | Checker for uids by finding if the <a>UID</a> is in one of the
 --   possible data sets contained in the <a>SystemInformation</a> database.
@@ -1971,7 +1944,7 @@ AppndxProg :: [Contents] -> AppndxSec
 
 -- | Values of Auxiliary Constants section.
 data AuxConstntSec
-AuxConsProg :: CI -> [QDefinition] -> AuxConstntSec
+AuxConsProg :: CI -> [ConstQDef] -> AuxConstntSec
 
 -- | Choose whether to show or hide the derivation of an expression.
 data DerivationDisplay
@@ -2218,16 +2191,6 @@ Succinct :: Verbosity
 --   <tt>SCSSub</tt> program).
 ddefn :: Fields -> SystemInformation -> DataDefinition -> LabelledContent
 
--- | A database that contains <a>TheoryModel</a>s, <a>GenDefn</a>s,
---   <a>DataDefinition</a>s, and <a>InstanceModel</a>s.
-data ModelDB
-
--- | Data Definition reference map.
-ddRefDB :: ModelDB -> RefMap DataDefinition
-
--- | Constructor for creating a <a>ModelDB</a>.
-mdb :: [TheoryModel] -> [GenDefn] -> [DataDefinition] -> [InstanceModel] -> ModelDB
-
 -- | Extracts traceability graph inforomation from filled-in
 --   <a>SystemInformation</a>.
 mkGraphInfo :: SystemInformation -> GraphInfo
@@ -2248,7 +2211,7 @@ traceMatOtherReq :: SystemInformation -> TraceConfig
 generateTraceMap :: [DocSection] -> TraceMap
 
 -- | Helper that gets a table of constants from a <a>QDefinition</a>.
-tableOfConstants :: [QDefinition] -> LabelledContent
+tableOfConstants :: [ConstQDef] -> LabelledContent
 
 -- | Combines <a>purpDocPara1</a> and <a>developmentProcessParagraph</a>.
 --   Verbosity controls if the <a>developmentProcessParagraph</a> is added
@@ -2349,7 +2312,7 @@ data ReferenceDB
 -- | Data structure for holding all of the requisite information about a
 --   system to be used in artifact generation.
 data SystemInformation
-[SI] :: forall a b c e f h i j d. (CommonIdea a, Idea a, Idea b, HasName c, Quantity e, Eq e, MayHaveUnit e, Quantity f, MayHaveUnit f, Concept f, Eq f, Quantity h, MayHaveUnit h, Quantity i, MayHaveUnit i, HasUID j, Constrained j) => {_sys :: a, _kind :: b, _authors :: [c], _purpose :: d, _quants :: [e], _concepts :: [f], _instModels :: [InstanceModel], _datadefs :: [DataDefinition], _configFiles :: [String], _inputs :: [h], _outputs :: [i], _defSequence :: [Block QDefinition], _constraints :: [j], _constants :: [QDefinition], _sysinfodb :: ChunkDB, _usedinfodb :: ChunkDB, refdb :: ReferenceDB} -> SystemInformation
+[SI] :: forall a b c e f h i j d. (CommonIdea a, Idea a, Idea b, HasName c, Quantity e, Eq e, MayHaveUnit e, Quantity f, MayHaveUnit f, Concept f, Eq f, Quantity h, MayHaveUnit h, Quantity i, MayHaveUnit i, HasUID j, Constrained j) => {_sys :: a, _kind :: b, _authors :: [c], _purpose :: d, _quants :: [e], _concepts :: [f], _instModels :: [InstanceModel], _datadefs :: [DataDefinition], _configFiles :: [String], _inputs :: [h], _outputs :: [i], _defSequence :: [Block SimpleQDef], _constraints :: [j], _constants :: [ConstQDef], _sysinfodb :: ChunkDB, _usedinfodb :: ChunkDB, refdb :: ReferenceDB} -> SystemInformation
 
 -- | Smart constructor for chunk databases. Takes in the following:
 --   
@@ -2519,7 +2482,7 @@ AppndxProg :: [Contents] -> AppndxSec
 
 -- | Values of Auxiliary Constants section.
 data AuxConstntSec
-AuxConsProg :: CI -> [QDefinition] -> AuxConstntSec
+AuxConsProg :: CI -> [ConstQDef] -> AuxConstntSec
 
 -- | Choose whether to show or hide the derivation of an expression.
 data DerivationDisplay

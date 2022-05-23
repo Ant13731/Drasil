@@ -527,7 +527,7 @@ mkGraphEdges :: [TraceViewCat] -> [TraceViewCat] -> SystemInformation -> [(UID, 
 -- | Helper for making graph edges. Taken from Utils.Drasil's traceability
 --   matrix relation finder. But, instead of marking <a>X</a> on two
 --   related ideas, it makes them an edge.
-makeTGraph :: [String] -> [[String]] -> [String] -> [(String, [String])]
+makeTGraph :: [UID] -> [[UID]] -> [UID] -> [(UID, [UID])]
 
 -- | Checker for uids by finding if the <a>UID</a> is in one of the
 --   possible data sets contained in the <a>SystemInformation</a> database.
@@ -728,7 +728,7 @@ AppndxProg :: [Contents] -> AppndxSec
 
 -- | Values of Auxiliary Constants section.
 data AuxConstntSec
-AuxConsProg :: CI -> [QDefinition] -> AuxConstntSec
+AuxConsProg :: CI -> [ConstQDef] -> AuxConstntSec
 
 -- | Choose whether to show or hide the derivation of an expression.
 data DerivationDisplay
@@ -975,16 +975,6 @@ Succinct :: Verbosity
 --   <tt>SCSSub</tt> program).
 ddefn :: Fields -> SystemInformation -> DataDefinition -> LabelledContent
 
--- | A database that contains <a>TheoryModel</a>s, <a>GenDefn</a>s,
---   <a>DataDefinition</a>s, and <a>InstanceModel</a>s.
-data ModelDB
-
--- | Data Definition reference map.
-ddRefDB :: ModelDB -> RefMap DataDefinition
-
--- | Constructor for creating a <a>ModelDB</a>.
-mdb :: [TheoryModel] -> [GenDefn] -> [DataDefinition] -> [InstanceModel] -> ModelDB
-
 -- | Extracts traceability graph inforomation from filled-in
 --   <a>SystemInformation</a>.
 mkGraphInfo :: SystemInformation -> GraphInfo
@@ -1005,7 +995,7 @@ traceMatOtherReq :: SystemInformation -> TraceConfig
 generateTraceMap :: [DocSection] -> TraceMap
 
 -- | Helper that gets a table of constants from a <a>QDefinition</a>.
-tableOfConstants :: [QDefinition] -> LabelledContent
+tableOfConstants :: [ConstQDef] -> LabelledContent
 
 -- | Combines <a>purpDocPara1</a> and <a>developmentProcessParagraph</a>.
 --   Verbosity controls if the <a>developmentProcessParagraph</a> is added
@@ -1106,7 +1096,7 @@ data ReferenceDB
 -- | Data structure for holding all of the requisite information about a
 --   system to be used in artifact generation.
 data SystemInformation
-[SI] :: forall a b c e f h i j d. (CommonIdea a, Idea a, Idea b, HasName c, Quantity e, Eq e, MayHaveUnit e, Quantity f, MayHaveUnit f, Concept f, Eq f, Quantity h, MayHaveUnit h, Quantity i, MayHaveUnit i, HasUID j, Constrained j) => {_sys :: a, _kind :: b, _authors :: [c], _purpose :: d, _quants :: [e], _concepts :: [f], _instModels :: [InstanceModel], _datadefs :: [DataDefinition], _configFiles :: [String], _inputs :: [h], _outputs :: [i], _defSequence :: [Block QDefinition], _constraints :: [j], _constants :: [QDefinition], _sysinfodb :: ChunkDB, _usedinfodb :: ChunkDB, refdb :: ReferenceDB} -> SystemInformation
+[SI] :: forall a b c e f h i j d. (CommonIdea a, Idea a, Idea b, HasName c, Quantity e, Eq e, MayHaveUnit e, Quantity f, MayHaveUnit f, Concept f, Eq f, Quantity h, MayHaveUnit h, Quantity i, MayHaveUnit i, HasUID j, Constrained j) => {_sys :: a, _kind :: b, _authors :: [c], _purpose :: d, _quants :: [e], _concepts :: [f], _instModels :: [InstanceModel], _datadefs :: [DataDefinition], _configFiles :: [String], _inputs :: [h], _outputs :: [i], _defSequence :: [Block SimpleQDef], _constraints :: [j], _constants :: [ConstQDef], _sysinfodb :: ChunkDB, _usedinfodb :: ChunkDB, refdb :: ReferenceDB} -> SystemInformation
 
 -- | Smart constructor for chunk databases. Takes in the following:
 --   
@@ -1276,7 +1266,7 @@ AppndxProg :: [Contents] -> AppndxSec
 
 -- | Values of Auxiliary Constants section.
 data AuxConstntSec
-AuxConsProg :: CI -> [QDefinition] -> AuxConstntSec
+AuxConsProg :: CI -> [ConstQDef] -> AuxConstntSec
 
 -- | Choose whether to show or hide the derivation of an expression.
 data DerivationDisplay

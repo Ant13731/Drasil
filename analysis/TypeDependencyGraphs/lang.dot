@@ -18,6 +18,8 @@ digraph alltypes {
 		ConceptInstance -> ShortName;
 		}
 	}
+	subgraph namedcombinators {
+	}
 	subgraph citation {
 		subgraph citation{
 		Citation	[shape=oval, color=cyan3, label="Citation"];
@@ -68,18 +70,29 @@ digraph alltypes {
 		DefinedQuantityDict -> MaybeUnitDefn;
 		}
 	}
-	subgraph eq {
-		subgraph qdefinition{
-		QDefinition	[shape=oval, color=cyan3, label="QDefinition"];
-		QDefinition -> DefinedQuantityDict;
-		QDefinition -> UID;
-		QDefinition -> Expr;
+	subgraph differentialmodel {
+		subgraph coeffderiv{
+		CoeffDeriv	[shape=oval, color=cyan3, label="CoeffDeriv"];
+		CoeffDeriv -> Expr;
+		CoeffDeriv -> Int;
+		}
+		subgraph differentialmodel{
+		DifferentialModel	[shape=oval, color=cyan3, label="DifferentialModel"];
+		DifferentialModel -> UnitalChunk;
+		DifferentialModel -> ConstrConcept;
+		DifferentialModel -> CoeffDeriv;
+		DifferentialModel -> Expr;
+		DifferentialModel -> ConceptChunk;
 		}
 	}
-	subgraph namedargument {
-		subgraph namedargument{
-		NamedArgument	[shape=oval, color=darkgreen, label="NamedArgument"];
-		NamedArgument -> QuantityDict;
+	subgraph eq {
+		subgraph qdefinitione{
+		QDefinitione	[shape=oval, color=darkviolet, label="QDefinitione"];
+		QDefinitione -> DefinedQuantityDict;
+		QDefinitione -> UID;
+		QDefinitione -> e;
+		QDefinitione -> QDefinition;
+		QDefinitione -> Lens_;
 		}
 	}
 	subgraph namedidea {
@@ -107,7 +120,7 @@ digraph alltypes {
 		subgraph relationconcept{
 		RelationConcept	[shape=oval, color=cyan3, label="RelationConcept"];
 		RelationConcept -> ConceptChunk;
-		RelationConcept -> Relation;
+		RelationConcept -> ModelExpr;
 		}
 	}
 	subgraph uncertainquantity {
@@ -149,14 +162,6 @@ digraph alltypes {
 		UnitaryChunk -> UnitDefn;
 		}
 	}
-	subgraph citations {
-	}
-	subgraph core {
-	}
-	subgraph core2 {
-	}
-	subgraph document {
-	}
 	subgraph citation {
 		subgraph citefield{
 		CiteField	[shape=oval, color=darkviolet, label="CiteField"];
@@ -180,6 +185,10 @@ digraph alltypes {
 		}
 	}
 	subgraph sentence {
+	}
+	subgraph combinators {
+	}
+	subgraph contents {
 	}
 	subgraph core {
 		subgraph labelledcontent{
@@ -260,9 +269,86 @@ digraph alltypes {
 		Identifier -> String;
 		}
 	}
+	subgraph class {
+	}
+	subgraph development {
+	}
 	subgraph extract {
 	}
-	subgraph math {
+	subgraph lang {
+		subgraph arithbinop{
+		ArithBinOp	[shape=oval, color=darkviolet, label="ArithBinOp"];
+		}
+		subgraph eqbinop{
+		EqBinOp	[shape=oval, color=darkviolet, label="EqBinOp"];
+		}
+		subgraph boolbinop{
+		BoolBinOp	[shape=oval, color=darkviolet, label="BoolBinOp"];
+		}
+		subgraph labinop{
+		LABinOp	[shape=oval, color=darkviolet, label="LABinOp"];
+		}
+		subgraph ordbinop{
+		OrdBinOp	[shape=oval, color=darkviolet, label="OrdBinOp"];
+		}
+		subgraph vvvbinop{
+		VVVBinOp	[shape=oval, color=darkviolet, label="VVVBinOp"];
+		}
+		subgraph vvnbinop{
+		VVNBinOp	[shape=oval, color=darkviolet, label="VVNBinOp"];
+		}
+		subgraph assocarithoper{
+		AssocArithOper	[shape=oval, color=darkviolet, label="AssocArithOper"];
+		}
+		subgraph assocbooloper{
+		AssocBoolOper	[shape=oval, color=darkviolet, label="AssocBoolOper"];
+		}
+		subgraph ufunc{
+		UFunc	[shape=oval, color=darkviolet, label="UFunc"];
+		}
+		subgraph ufuncb{
+		UFuncB	[shape=oval, color=darkviolet, label="UFuncB"];
+		}
+		subgraph ufuncvv{
+		UFuncVV	[shape=oval, color=darkviolet, label="UFuncVV"];
+		}
+		subgraph ufuncvn{
+		UFuncVN	[shape=oval, color=darkviolet, label="UFuncVN"];
+		}
+		subgraph completeness{
+		Completeness	[shape=oval, color=darkviolet, label="Completeness"];
+		}
+		subgraph expr{
+		Expr	[shape=oval, color=darkviolet, label="Expr"];
+		Expr -> Literal;
+		Expr -> Expr;
+		Expr -> AssocArithOper;
+		Expr -> AssocBoolOper;
+		Expr -> UID;
+		Expr -> Completeness;
+		Expr -> Relation;
+		Expr -> UFunc;
+		Expr -> UFuncB;
+		Expr -> UFuncVV;
+		Expr -> UFuncVN;
+		Expr -> ArithBinOp;
+		Expr -> BoolBinOp;
+		Expr -> EqBinOp;
+		Expr -> LABinOp;
+		Expr -> OrdBinOp;
+		Expr -> VVVBinOp;
+		Expr -> VVNBinOp;
+		Expr -> DiscreteDomainDesc;
+		Expr -> RealInterval;
+		}
+		subgraph relation{
+		Relation	[shape=oval, color=red2, label="Relation"];
+		Relation -> Expr;
+		}
+		subgraph variable{
+		Variable	[shape=oval, color=red2, label="Variable"];
+		Variable -> String;
+		}
 	}
 	subgraph precedence {
 	}
@@ -277,15 +363,112 @@ digraph alltypes {
 		IRefProg -> UID;
 		}
 	}
+	subgraph class {
+	}
+	subgraph development {
+	}
+	subgraph lang {
+		subgraph literal{
+		Literal	[shape=oval, color=darkviolet, label="Literal"];
+		Literal -> Integer;
+		Literal -> Literal;
+		Literal -> String;
+		Literal -> Double;
+		}
+	}
+	subgraph class {
+	}
 	subgraph convert {
 	}
 	subgraph development {
 	}
 	subgraph extract {
 	}
-	subgraph math {
+	subgraph lang {
+		subgraph arithbinop{
+		ArithBinOp	[shape=oval, color=darkviolet, label="ArithBinOp"];
+		}
+		subgraph eqbinop{
+		EqBinOp	[shape=oval, color=darkviolet, label="EqBinOp"];
+		}
+		subgraph boolbinop{
+		BoolBinOp	[shape=oval, color=darkviolet, label="BoolBinOp"];
+		}
+		subgraph labinop{
+		LABinOp	[shape=oval, color=darkviolet, label="LABinOp"];
+		}
+		subgraph ordbinop{
+		OrdBinOp	[shape=oval, color=darkviolet, label="OrdBinOp"];
+		}
+		subgraph vvvbinop{
+		VVVBinOp	[shape=oval, color=darkviolet, label="VVVBinOp"];
+		}
+		subgraph vvnbinop{
+		VVNBinOp	[shape=oval, color=darkviolet, label="VVNBinOp"];
+		}
+		subgraph assocarithoper{
+		AssocArithOper	[shape=oval, color=darkviolet, label="AssocArithOper"];
+		}
+		subgraph assocbooloper{
+		AssocBoolOper	[shape=oval, color=darkviolet, label="AssocBoolOper"];
+		}
+		subgraph ufunc{
+		UFunc	[shape=oval, color=darkviolet, label="UFunc"];
+		}
+		subgraph ufuncb{
+		UFuncB	[shape=oval, color=darkviolet, label="UFuncB"];
+		}
+		subgraph ufuncvv{
+		UFuncVV	[shape=oval, color=darkviolet, label="UFuncVV"];
+		}
+		subgraph ufuncvn{
+		UFuncVN	[shape=oval, color=darkviolet, label="UFuncVN"];
+		}
+		subgraph statbinop{
+		StatBinOp	[shape=oval, color=darkviolet, label="StatBinOp"];
+		}
+		subgraph spacebinop{
+		SpaceBinOp	[shape=oval, color=darkviolet, label="SpaceBinOp"];
+		}
+		subgraph derivtype{
+		DerivType	[shape=oval, color=darkviolet, label="DerivType"];
+		}
+		subgraph modelexpr{
+		ModelExpr	[shape=oval, color=darkviolet, label="ModelExpr"];
+		ModelExpr -> Literal;
+		ModelExpr -> ModelExpr;
+		ModelExpr -> Space;
+		ModelExpr -> AssocArithOper;
+		ModelExpr -> AssocBoolOper;
+		ModelExpr -> Integer;
+		ModelExpr -> DerivType;
+		ModelExpr -> UID;
+		ModelExpr -> Completeness;
+		ModelExpr -> UFunc;
+		ModelExpr -> UFuncB;
+		ModelExpr -> UFuncVV;
+		ModelExpr -> UFuncVN;
+		ModelExpr -> ArithBinOp;
+		ModelExpr -> BoolBinOp;
+		ModelExpr -> EqBinOp;
+		ModelExpr -> LABinOp;
+		ModelExpr -> OrdBinOp;
+		ModelExpr -> SpaceBinOp;
+		ModelExpr -> StatBinOp;
+		ModelExpr -> VVVBinOp;
+		ModelExpr -> VVNBinOp;
+		ModelExpr -> DomainDesc;
+		ModelExpr -> t;
+		ModelExpr -> RealInterval;
+		}
+		subgraph variable{
+		Variable	[shape=oval, color=red2, label="Variable"];
+		Variable -> String;
+		}
 	}
 	subgraph precedence {
+	}
+	subgraph combinators {
 	}
 	subgraph core {
 		subgraph capitalizationrule{
@@ -304,7 +487,26 @@ digraph alltypes {
 		PluralForm -> Sentence;
 		}
 	}
+	subgraph combinators {
+	}
 	subgraph extract {
+	}
+	subgraph fold {
+		subgraph enumtype{
+		EnumType	[shape=oval, color=darkviolet, label="EnumType"];
+		}
+		subgraph wraptype{
+		WrapType	[shape=oval, color=darkviolet, label="WrapType"];
+		}
+		subgraph septype{
+		SepType	[shape=oval, color=darkviolet, label="SepType"];
+		}
+		subgraph foldtype{
+		FoldType	[shape=oval, color=darkviolet, label="FoldType"];
+		FoldType -> SepType;
+		FoldType -> FoldType;
+		FoldType -> Sentence;
+		}
 	}
 	subgraph helpers {
 	}
@@ -357,13 +559,6 @@ digraph alltypes {
 		Host -> String;
 		}
 	}
-	subgraph core {
-		subgraph uncertainty{
-		Uncertainty	[shape=oval, color=cyan3, label="Uncertainty"];
-		Uncertainty -> MaybeDouble;
-		Uncertainty -> MaybeInt;
-		}
-	}
 	subgraph clasess {
 		subgraph conceptc{
 		Conceptc	[shape=oval, color=red2, label="Conceptc"];
@@ -399,7 +594,6 @@ digraph alltypes {
 		subgraph derivation{
 		Derivation	[shape=oval, color=darkviolet, label="Derivation"];
 		Derivation -> Sentence;
-		Derivation -> Derivation;
 		}
 	}
 	subgraph development {
@@ -445,169 +639,9 @@ digraph alltypes {
 		ShowTableOfContents -> Document;
 		}
 	}
-	subgraph expr {
-		subgraph arithbinop{
-		ArithBinOp	[shape=oval, color=darkviolet, label="ArithBinOp"];
-		}
-		subgraph eqbinop{
-		EqBinOp	[shape=oval, color=darkviolet, label="EqBinOp"];
-		}
-		subgraph boolbinop{
-		BoolBinOp	[shape=oval, color=darkviolet, label="BoolBinOp"];
-		}
-		subgraph labinop{
-		LABinOp	[shape=oval, color=darkviolet, label="LABinOp"];
-		}
-		subgraph ordbinop{
-		OrdBinOp	[shape=oval, color=darkviolet, label="OrdBinOp"];
-		}
-		subgraph vvvbinop{
-		VVVBinOp	[shape=oval, color=darkviolet, label="VVVBinOp"];
-		}
-		subgraph vvnbinop{
-		VVNBinOp	[shape=oval, color=darkviolet, label="VVNBinOp"];
-		}
-		subgraph assocarithoper{
-		AssocArithOper	[shape=oval, color=darkviolet, label="AssocArithOper"];
-		}
-		subgraph assocbooloper{
-		AssocBoolOper	[shape=oval, color=darkviolet, label="AssocBoolOper"];
-		}
-		subgraph ufunc{
-		UFunc	[shape=oval, color=darkviolet, label="UFunc"];
-		}
-		subgraph ufuncb{
-		UFuncB	[shape=oval, color=darkviolet, label="UFuncB"];
-		}
-		subgraph ufuncvv{
-		UFuncVV	[shape=oval, color=darkviolet, label="UFuncVV"];
-		}
-		subgraph ufuncvn{
-		UFuncVN	[shape=oval, color=darkviolet, label="UFuncVN"];
-		}
-		subgraph completeness{
-		Completeness	[shape=oval, color=darkviolet, label="Completeness"];
-		}
-		subgraph expr{
-		Expr	[shape=oval, color=darkviolet, label="Expr"];
-		Expr -> Double;
-		Expr -> Expr;
-		Expr -> Integer;
-		Expr -> String;
-		Expr -> AssocArithOper;
-		Expr -> AssocBoolOper;
-		Expr -> DerivType;
-		Expr -> UID;
-		Expr -> Completeness;
-		Expr -> ExprRelation;
-		Expr -> UFunc;
-		Expr -> UFuncB;
-		Expr -> UFuncVV;
-		Expr -> UFuncVN;
-		Expr -> ArithBinOp;
-		Expr -> BoolBinOp;
-		Expr -> EqBinOp;
-		Expr -> LABinOp;
-		Expr -> OrdBinOp;
-		Expr -> VVVBinOp;
-		Expr -> VVNBinOp;
-		Expr -> DomainDesc;
-		Expr -> RealInterval;
-		}
-		subgraph derivtype{
-		DerivType	[shape=oval, color=darkviolet, label="DerivType"];
-		}
-		subgraph relation{
-		Relation	[shape=oval, color=red2, label="Relation"];
-		Relation -> Expr;
-		}
-		subgraph variable{
-		Variable	[shape=oval, color=red2, label="Variable"];
-		Variable -> String;
-		}
-	}
 	subgraph exprclasess {
 	}
 	subgraph mics {
-	}
-	subgraph modelexpr {
-		subgraph arithbinop{
-		ArithBinOp	[shape=oval, color=darkviolet, label="ArithBinOp"];
-		}
-		subgraph eqbinop{
-		EqBinOp	[shape=oval, color=darkviolet, label="EqBinOp"];
-		}
-		subgraph boolbinop{
-		BoolBinOp	[shape=oval, color=darkviolet, label="BoolBinOp"];
-		}
-		subgraph labinop{
-		LABinOp	[shape=oval, color=darkviolet, label="LABinOp"];
-		}
-		subgraph ordbinop{
-		OrdBinOp	[shape=oval, color=darkviolet, label="OrdBinOp"];
-		}
-		subgraph vvvbinop{
-		VVVBinOp	[shape=oval, color=darkviolet, label="VVVBinOp"];
-		}
-		subgraph vvnbinop{
-		VVNBinOp	[shape=oval, color=darkviolet, label="VVNBinOp"];
-		}
-		subgraph assocarithoper{
-		AssocArithOper	[shape=oval, color=darkviolet, label="AssocArithOper"];
-		}
-		subgraph assocbooloper{
-		AssocBoolOper	[shape=oval, color=darkviolet, label="AssocBoolOper"];
-		}
-		subgraph ufunc{
-		UFunc	[shape=oval, color=darkviolet, label="UFunc"];
-		}
-		subgraph ufuncb{
-		UFuncB	[shape=oval, color=darkviolet, label="UFuncB"];
-		}
-		subgraph ufuncvv{
-		UFuncVV	[shape=oval, color=darkviolet, label="UFuncVV"];
-		}
-		subgraph ufuncvn{
-		UFuncVN	[shape=oval, color=darkviolet, label="UFuncVN"];
-		}
-		subgraph statbinop{
-		StatBinOp	[shape=oval, color=darkviolet, label="StatBinOp"];
-		}
-		subgraph spacebinop{
-		SpaceBinOp	[shape=oval, color=darkviolet, label="SpaceBinOp"];
-		}
-		subgraph modelexpr{
-		ModelExpr	[shape=oval, color=darkviolet, label="ModelExpr"];
-		ModelExpr -> Double;
-		ModelExpr -> ModelExpr;
-		ModelExpr -> Integer;
-		ModelExpr -> String;
-		ModelExpr -> Space;
-		ModelExpr -> AssocArithOper;
-		ModelExpr -> AssocBoolOper;
-		ModelExpr -> DerivType;
-		ModelExpr -> UID;
-		ModelExpr -> Completeness;
-		ModelExpr -> UFunc;
-		ModelExpr -> UFuncB;
-		ModelExpr -> UFuncVV;
-		ModelExpr -> UFuncVN;
-		ModelExpr -> ArithBinOp;
-		ModelExpr -> BoolBinOp;
-		ModelExpr -> EqBinOp;
-		ModelExpr -> LABinOp;
-		ModelExpr -> OrdBinOp;
-		ModelExpr -> SpaceBinOp;
-		ModelExpr -> StatBinOp;
-		ModelExpr -> VVVBinOp;
-		ModelExpr -> VVNBinOp;
-		ModelExpr -> DomainDesc;
-		ModelExpr -> RealInterval;
-		}
-		subgraph variable{
-		Variable	[shape=oval, color=red2, label="Variable"];
-		Variable -> String;
-		}
 	}
 	subgraph nounpraehs {
 		subgraph capitalization{
@@ -678,14 +712,14 @@ digraph alltypes {
 		}
 		subgraph rtopology{
 		RTopology	[shape=oval, color=darkviolet, label="RTopology"];
-		}
-		subgraph domaindescab{
-		DomainDescab	[shape=oval, color=darkviolet, label="DomainDescab"];
-		DomainDescab -> Symbol;
-		DomainDescab -> RTopology;
-		DomainDescab -> a;
-		DomainDescab -> b;
-		DomainDescab -> DomainDesc;
+		RTopology -> DomainDesc;
+		RTopology -> tplgy;
+		RTopology -> RTopology;
+		RTopology -> a;
+		RTopology -> b;
+		RTopology -> Symbol;
+		RTopology -> _Discrete;
+		RTopology -> _Continuous;
 		}
 		subgraph inclusive{
 		Inclusive	[shape=oval, color=darkviolet, label="Inclusive"];
@@ -700,6 +734,14 @@ digraph alltypes {
 		subgraph primitive{
 		Primitive	[shape=oval, color=red2, label="Primitive"];
 		Primitive -> Space;
+		}
+		subgraph discretedomaindescab{
+		DiscreteDomainDescab	[shape=oval, color=red2, label="DiscreteDomainDescab"];
+		DiscreteDomainDescab -> DomainDesc_Discreteab;
+		}
+		subgraph continuousdomaindescab{
+		ContinuousDomainDescab	[shape=oval, color=red2, label="ContinuousDomainDescab"];
+		ContinuousDomainDescab -> DomainDesc_Continuousab;
 		}
 	}
 	subgraph stages {
@@ -716,13 +758,37 @@ digraph alltypes {
 		Symbol -> String;
 		}
 	}
+	subgraph synonyms {
+		subgraph constqdef{
+		ConstQDef	[shape=oval, color=red2, label="ConstQDef"];
+		ConstQDef -> QDefinitionLiteral;
+		}
+		subgraph simpleqdef{
+		SimpleQDef	[shape=oval, color=red2, label="SimpleQDef"];
+		SimpleQDef -> QDefinitionExpr;
+		}
+		subgraph modelqdef{
+		ModelQDef	[shape=oval, color=red2, label="ModelQDef"];
+		ModelQDef -> QDefinitionModelExpr;
+		}
+		subgraph pexpr{
+		PExpr	[shape=oval, color=red2, label="PExpr"];
+		PExpr -> ExprCrLiteralCr;
+		PExpr -> r;
+		}
+	}
 	subgraph uid {
 		subgraph uid{
-		UID	[shape=oval, color=red2, label="UID"];
+		UID	[shape=oval, color=darkgreen, label="UID"];
 		UID -> String;
 		}
 	}
 	subgraph uncertainty {
+		subgraph uncertainty{
+		Uncertainty	[shape=oval, color=cyan3, label="Uncertainty"];
+		Uncertainty -> MaybeDouble;
+		Uncertainty -> MaybeInt;
+		}
 	}
 	subgraph unicode {
 		subgraph special{

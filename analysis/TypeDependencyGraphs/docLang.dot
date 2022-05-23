@@ -200,7 +200,7 @@ digraph alltypes {
 		subgraph auxconstntsec{
 		AuxConstntSec	[shape=oval, color=darkviolet, label="AuxConstntSec"];
 		AuxConstntSec -> CI;
-		AuxConstntSec -> QDefinition;
+		AuxConstntSec -> ConstQDef;
 		}
 		subgraph appndxsec{
 		AppndxSec	[shape=oval, color=darkgreen, label="AppndxSec"];
@@ -273,15 +273,6 @@ digraph alltypes {
 		subgraph modrow{
 		ModRow	[shape=oval, color=red2, label="ModRow"];
 		ModRow -> StringContents;
-		}
-	}
-	subgraph refhelpers {
-		subgraph modeldb{
-		ModelDB	[shape=oval, color=cyan3, label="ModelDB"];
-		ModelDB -> RefMapTheoryModel;
-		ModelDB -> RefMapGenDefn;
-		ModelDB -> RefMapDataDefinition;
-		ModelDB -> RefMapInstanceModel;
 		}
 	}
 	subgraph traceabilitygraph {
